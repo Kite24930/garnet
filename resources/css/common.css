@@ -1,0 +1,68 @@
+@import 'app.css';
+@font-face {
+  font-family: "Black Ops One";
+  src: url("/storage/fonts/Black_Ops_One/BlackOpsOne-Regular.ttf");
+}
+@font-face {
+  font-family: "Kosugi";
+  src: url("/storage/fonts/Kosugi/Kosugi-Regular.ttf");
+}
+@font-face {
+  font-family: "Overpass";
+  src: url("/storage/fonts/Overpass/Overpass-variableFont_wght.ttf");
+}
+@font-face {
+  font-family: "Overpass Italic";
+  src: url("/storage/fonts/Overpass/Overpass-Italic-variableFont_wght.ttf");
+}
+@font-face {
+  font-family: "M PLUS 2";
+  src: url("/storage/fonts/M_PLUS_2/MPLUS2-VariableFont_wght.ttf");
+}
+* {
+  color: #eee;
+  font-family: "M PLUS 2", system-ui;
+}
+
+root {
+  --primaly-color: #eee;
+  --garnet-color: #b30000;
+  --ruby-color: #800000;
+}
+
+.garnet {
+  font-family: "Black Ops One", system-ui;
+}
+
+.eng-title {
+  font-family: "Overpass", system-ui;
+}
+
+.eng-italic {
+  font-family: "Overpass Italic", system-ui;
+}
+
+body {
+  background: linear-gradient(45deg, #800000, #300000);
+  background-size: 200% 200%;
+  animation: bggradient 20s ease infinite;
+}
+
+@keyframes bggradient {
+  0% {
+    background-position: 0 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0 50%;
+  }
+}
+.grass-btn {
+  background: linear-gradient(45deg, #800000, #300000);
+  border-radius: 5px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+}
+
+/*# sourceMappingURL=common.css.map */

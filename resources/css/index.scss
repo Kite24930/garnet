@@ -1,0 +1,79 @@
+.bg-garnet {
+    background: linear-gradient(45deg, #800000, #300000);
+}
+
+.title-fade-in {
+    animation: titleFadeIn 0.5s ease-in-out forwards;
+}
+
+@keyframes titleFadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+.garnet-line {
+    background-color: #eee;
+    border-radius: 9999px;
+    height: 5px;
+}
+
+.line-effect {
+    animation: linegradient 1s ease-in-out forwards;
+}
+
+@keyframes linegradient {
+    0% {
+        width: 0;
+    }
+    30% {
+        width: 10%;
+    }
+    100% {
+        width: 100%;
+    }
+}
+
+.garnet-logo {
+    height: 0;
+    width: 0;
+    border-radius: 10px;
+}
+
+.logo-fade-in {
+    animation: fadeIn 2s ease-in-out forwards;
+}
+
+@keyframes fadeIn {
+    0% {
+        height: 0;
+        width: 0;
+        opacity: 0;
+    }
+    50% {
+        height: 150px;
+        width: 150px;
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+        height: 150px;
+        width: 150px;
+    }
+}
+
+.logo-fade-out {
+    animation: fadeOut 1s ease-in-out forwards;
+}
+
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
