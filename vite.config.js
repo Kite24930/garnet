@@ -15,10 +15,17 @@ export default defineConfig({
         manifest: 'manifest.json',
         rollupOptions: {
             input: {
+                app: 'resources/js/app.js',
+                appStyle: 'resources/css/app.css',
                 common: 'resources/js/common.js',
                 commonStyle: 'resources/css/common.css',
                 index: 'resources/js/index.js',
                 indexStyle: 'resources/css/index.css',
+                settings: 'resources/js/settings.js',
+                settingsStyle: 'resources/css/settings.css',
+                rank: 'resources/js/settings/rank.js',
+                category: 'resources/js/settings/category.js',
+                task: 'resources/js/settings/task.js',
             },
         }
     },

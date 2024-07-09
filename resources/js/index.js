@@ -3,7 +3,7 @@ window.addEventListener('load', () => {
     if (logoArea !== null) {
         document.querySelector('.garnet').classList.add('title-fade-in');
         setTimeout(() => {
-            document.querySelectorAll('.garnet-line').forEach((el) => {
+            document.querySelectorAll('#logo-area .garnet-line').forEach((el) => {
                 el.classList.add('line-effect');
             });
         }, 500)
@@ -21,3 +21,16 @@ window.addEventListener('load', () => {
         }, 6000);
     }
 })
+
+document.querySelectorAll('.btn-item').forEach((el) => {
+    el.addEventListener('click', () => {
+        const link = el.getAttribute('data-link');
+        const line = el.querySelector('.garnet-line');
+        line.classList.add('btn-effect');
+        setTimeout(() => {
+            const a = document.createElement('a');
+            a.href = link;
+            a.click();
+        }, 800)
+    })
+});

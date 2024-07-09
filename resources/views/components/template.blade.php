@@ -20,7 +20,16 @@
         @vite(['resources/css/'.$css])
     @endif
 </head>
-<body class="min-h-screen">
+<body class="min-h-screen flex flex-col justify-center items-center relative">
+<header>
+    <div class="flex justify-center mt-4 mb-2">
+        <a href="{{ route('index') }}" class="flex flex-col gap-2 items-center">
+            <div class="garnet-line w-full"></div>
+            <div class="px-4 text-6xl garnet">GARNET</div>
+            <div class="garnet-line w-full"></div>
+        </a>
+    </div>
+</header>
 {{ $slot }}
 </body>
 </html>
