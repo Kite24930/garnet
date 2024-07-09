@@ -56,18 +56,18 @@ class SettingController extends Controller
 
     public function categoryStore(Request $request) {
         try {
-            foreach($request->categories as $category) {
+            $categories = $request->input('categories');
+            foreach($categories as $category) {
                 Category::updateOrCreate([
-                    'id' => $category->id
+                    'id' => $category['id']
                 ], [
-                    'name' => $category->name,
-                    'eng_name' => $category->eng_name,
-                    'icon' => $category->icon,
+                    'name' => $category['name'],
+                    'eng_name' => $category['eng_name'],
                 ]);
             }
             return redirect()->route('setting.category')->with('success', 'Category added successfully');
         } catch (\Exception $e) {
-            return redirect()->route('setting.category')->with('error', 'Category added failed');
+            return redirect()->route('setting.category')->with('error', 'Category added failed')->with('message', $e->getMessage())->with('request', $request->all());
         }
     }
 
