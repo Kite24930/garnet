@@ -25,6 +25,7 @@ export default defineConfig({
                 settingsStyle: 'resources/css/settings.css',
                 rank: 'resources/js/settings/rank.js',
                 category: 'resources/js/settings/category.js',
+                group: 'resources/js/settings/group.js',
                 task: 'resources/js/settings/task.js',
             },
         }

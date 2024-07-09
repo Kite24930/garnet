@@ -24,8 +24,7 @@ document.getElementById('addBtn').addEventListener('click', (e) => {
     categoryEngInput.type = 'text';
     categoryEngInput.id = 'categoryEngName_' + categoryCount;
     categoryEngInput.name = 'categories[' + categoryCount + '][eng_name]';
-    categoryEngInput.classList.add('eng-italic', 'text-gray-600', 'text-xl -d' +
-        '', 'w-28', 'text-center', 'rounded', 'active:border-blue-500');
+    categoryEngInput.classList.add('eng-italic', 'text-gray-600', 'text-xl', 'w-28', 'text-center', 'rounded', 'active:border-blue-500');
     categoryEngInput.placeholder = 'Category English Name';
     categoryWrapper.appendChild(categoryEngInput);
     e.target.before(categoryWrapper);

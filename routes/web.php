@@ -32,6 +32,8 @@ Route::middleware('auth')->group(function () {
         Route::post('/settings/rank', [SettingController::class, 'rankStore'])->name('setting.rank.store');
         Route::get('/settings/category', [SettingController::class, 'category'])->name('setting.category');
         Route::post('/settings/category', [SettingController::class, 'categoryStore'])->name('setting.category.store');
+        Route::get('/settings/group', [SettingController::class, 'group'])->name('setting.group');
+        Route::post('/settings/group', [SettingController::class, 'groupStore'])->name('setting.group.store');
         Route::get('/settings/task', [SettingController::class, 'task'])->name('setting.task');
         Route::get('/settings/task/new', [SettingController::class, 'taskNew'])->name('setting.task.new');
         Route::post('/settings/task', [SettingController::class, 'taskStore'])->name('setting.task.store');

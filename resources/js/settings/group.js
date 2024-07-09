@@ -1,0 +1,32 @@
+import '../index.js';
+
+document.getElementById('addBtn').addEventListener('click', (e) => {
+    const groupCount = Laravel.count + 1;
+    const groupWrapper = document.createElement('div');
+    groupWrapper.classList.add('flex', 'flex-col', 'gap-4', 'items-center', 'border', 'border-gray-300', 'p-4', 'rounded-lg');
+    const groupLabel = document.createElement('label');
+    groupLabel.classList.add('text-sm');
+    groupLabel.innerText = 'Group ' + groupCount;
+    groupWrapper.appendChild(groupLabel);
+    const groupIdInput = document.createElement('input');
+    groupIdInput.type = 'hidden';
+    groupIdInput.name = 'groups[' + groupCount + '][id]';
+    groupIdInput.value = groupCount;
+    groupWrapper.appendChild(groupIdInput);
+    const groupInput = document.createElement('input');
+    groupInput.type = 'text';
+    groupInput.id = 'groupName_' + groupCount;
+    groupInput.name = 'groups[' + groupCount + '][name]';
+    groupInput.classList.add('text-xl', 'text-gray-600', 'max-w-40', 'rounded', 'active:border-blue-500');
+    groupInput.placeholder = 'Group Name';
+    groupWrapper.appendChild(groupInput);
+    const groupEngInput = document.createElement('input');
+    groupEngInput.type = 'text';
+    groupEngInput.id = 'groupEngName_' + groupCount;
+    groupEngInput.name = 'groups[' + groupCount + '][eng_name]';
+    groupEngInput.classList.add('eng-italic', 'text-gray-600', 'text-xl', 'w-28', 'text-center', 'rounded', 'active:border-blue-500');
+    groupEngInput.placeholder = 'Group English Name';
+    groupWrapper.appendChild(groupEngInput);
+    e.target.before(groupWrapper);
+    Laravel.count++;
+});

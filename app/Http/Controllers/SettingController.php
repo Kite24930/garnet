@@ -71,6 +71,31 @@ class SettingController extends Controller
         }
     }
 
+    public function group() {
+        $groups = Group::all();
+        $data = [
+            'groups' => $groups,
+        ];
+        return view('settings.group', $data);
+    }
+
+    public function groupStore(Request $request) {
+        try {
+            $groups = $request->input('groups');
+            foreach($groups as $group) {
+                Group::updateOrCreate([
+                    'id' => $group['id']
+                ], [
+                    'name' => $group['name'],
+                    'eng_name' => $group['eng_name'],
+                ]);
+            }
+            return redirect()->route('setting.group')->with('success', 'Group added successfully');
+        } catch (\Exception $e) {
+            return redirect()->route('setting.group')->with('error', 'Group added failed')->with('message', $e->getMessage())->with('request', $request->all());
+        }
+    }
+
     public function task() {
         $ranks = Rank::all();
         $categories = Category::all();
