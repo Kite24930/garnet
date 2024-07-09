@@ -1,4 +1,5 @@
 window.addEventListener('load', () => {
+    document.body.classList.add('fade-in');
     const logoArea = document.getElementById('logo-area');
     if (logoArea !== null) {
         document.querySelector('.garnet').classList.add('title-fade-in');
@@ -28,9 +29,13 @@ document.querySelectorAll('.btn-item').forEach((el) => {
         const line = el.querySelector('.garnet-line');
         line.classList.add('btn-effect');
         setTimeout(() => {
+            document.body.classList.remove('fade-in');
+            document.body.classList.add('fade-out');
+        }, 500);
+        setTimeout(() => {
             const a = document.createElement('a');
             a.href = link;
             a.click();
-        }, 800)
+        }, 1200)
     })
 });

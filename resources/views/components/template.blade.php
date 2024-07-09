@@ -20,7 +20,7 @@
         @vite(['resources/css/'.$css])
     @endif
 </head>
-<body class="min-h-screen flex flex-col justify-center items-center relative">
+<body class="min-h-screen flex flex-col justify-center items-center relative opacity-0">
 <header>
     <div class="flex justify-center mt-4 mb-2">
         <a href="{{ route('index') }}" class="flex flex-col gap-2 items-center">

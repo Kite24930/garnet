@@ -86,5 +86,21 @@
     opacity: 0;
   }
 }
+.fade-out {
+  animation: fadeOut 0.5s ease-in-out forwards;
+}
+
+.fade-in {
+  animation: bodyFadeIn 0.5s ease-in-out forwards;
+}
+
+@keyframes bodyFadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
 
 /*# sourceMappingURL=index.css.map */

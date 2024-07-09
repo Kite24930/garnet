@@ -50,20 +50,6 @@ root {
 
 body {
     background: linear-gradient(45deg, #800000, #300000);
-    background-size: 200% 200%;
-    animation: bggradient 20s ease infinite;
-}
-
-@keyframes bggradient{
-    0% {
-        background-position: 0 50%;
-    }
-    50% {
-        background-position: 100% 50%;
-    }
-    100% {
-        background-position: 0 50%;
-    }
 }
 
 .grass-btn {

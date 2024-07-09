@@ -7,6 +7,7 @@ use App\Models\Group;
 use App\Models\Rank;
 use App\Models\Task;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class SettingController extends Controller
 {
@@ -16,27 +17,32 @@ class SettingController extends Controller
     }
 
     public function rank() {
-        $rank = Rank::all();
+        $ranks = Rank::all();
         $data = [
-            'rank' => $rank
+            'ranks' => $ranks,
         ];
         return view('settings.rank', $data);
     }
 
     public function rankStore(Request $request) {
         try {
-            foreach($request->ranks as $rank) {
+            $ranks = $request->input('ranks');
+            foreach($ranks as $rank) {
+                if ($request->hasFile('icon_'.$rank['id'])) {
+                    $icon = $request->file('icon_'.$rank['id']);
+                    Storage::disk('public')->put('icons/'.$icon->getClientOriginalName(), file_get_contents($icon));
+                }
                 Rank::updateOrCreate([
-                    'id' => $rank->id
+                    'id' => $rank['id']
                 ], [
-                    'name' => $rank->name,
-                    'eng_name' => $rank->eng_name,
-                    'icon' => $rank->icon,
+                    'name' => $rank['name'],
+                    'eng_name' => $rank['eng_name'],
+                    'icon' => $rank['icon'],
                 ]);
             }
-            return redirect()->route('setting.rank')->with('success', 'Rank added successfully');
+            return response()->json(['status' => 'success', 'success' => 'Rank added successfully', 'request' => $request->all(), 'ranks' => Rank::all()]);
         } catch (\Exception $e) {
-            return redirect()->route('setting.rank')->with('error', 'Rank added failed');
+            return response()->json(['status' => 'error', 'error' => 'Rank added failed', 'message' => $e->getMessage(), 'request' => $request->all(), 'ranks' => Rank::all()]);
         }
     }
 
