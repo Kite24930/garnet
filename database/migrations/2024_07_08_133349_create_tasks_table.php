@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('rank_id')->constrained()->cascadeOnDelete();
             $table->foreignId('category_id')->constrained()->cascadeOnDelete();
             $table->foreignId('group_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('item_id')->constrained()->cascadeOnDelete();
             $table->text('text')->comment('Task text');
             $table->timestamps();
         });

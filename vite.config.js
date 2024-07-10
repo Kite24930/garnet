@@ -26,6 +26,7 @@ export default defineConfig({
                 rank: 'resources/js/settings/rank.js',
                 category: 'resources/js/settings/category.js',
                 group: 'resources/js/settings/group.js',
+                item: 'resources/js/settings/item.js',
                 task: 'resources/js/settings/task.js',
             },
         }

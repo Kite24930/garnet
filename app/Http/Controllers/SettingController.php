@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Group;
+use App\Models\Item;
 use App\Models\Rank;
 use App\Models\Task;
+use App\Models\TaskView;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -96,15 +98,33 @@ class SettingController extends Controller
         }
     }
 
-    public function task() {
-        $ranks = Rank::all();
-        $categories = Category::all();
-        $groups = Group::all();
-        $tasks = Task::all();
+    public function item() {
+        $items = Item::all();
         $data = [
-            'ranks' => $ranks,
-            'categories' => $categories,
-            'groups' => $groups,
+            'items' => $items,
+        ];
+        return view('settings.item', $data);
+    }
+
+    public function itemStore(Request $request) {
+        try {
+            $items = $request->input('items');
+            foreach($items as $item) {
+                Item::updateOrCreate([
+                    'id' => $item['id']
+                ], [
+                    'name' => $item['name'],
+                ]);
+            }
+            return redirect()->route('setting.item')->with('success', 'Item added successfully');
+        } catch (\Exception $e) {
+            return redirect()->route('setting.item')->with('error', 'Item added failed')->with('message', $e->getMessage())->with('request', $request->all());
+        }
+    }
+
+    public function task() {
+        $tasks = TaskView::orderBy('category_id')->orderBy('group_id')->orderBy('item_id')->orderBy('rank_id')->get();
+        $data = [
             'tasks' => $tasks,
         ];
         return view('settings.task', $data);
@@ -114,10 +134,12 @@ class SettingController extends Controller
         $ranks = Rank::all();
         $categories = Category::all();
         $groups = Group::all();
+        $items = Item::all();
         $data = [
             'ranks' => $ranks,
             'categories' => $categories,
             'groups' => $groups,
+            'items' => $items,
         ];
         return view('settings.task_new', $data);
     }
@@ -125,33 +147,56 @@ class SettingController extends Controller
     public function taskStore(Request $request) {
         try {
             Task::create([
-                'name' => $request->name,
-                'eng_name' => $request->eng_name,
-                'icon' => $request->icon,
                 'rank_id' => $request->rank_id,
                 'category_id' => $request->category_id,
                 'group_id' => $request->group_id,
+                'item_id' => $request->item_id,
+                'text' => $request->text,
             ]);
             return redirect()->route('setting.task')->with('success', 'Task added successfully');
         } catch (\Exception $e) {
-            return redirect()->route('setting.task')->with('error', 'Task added failed');
+            return redirect()->route('setting.task')->with('error', 'Task added failed')->with('message', $e->getMessage())->with('request', $request->all());
         }
+    }
+
+    public function taskEdit($task) {
+        $ranks = Rank::all();
+        $categories = Category::all();
+        $groups = Group::all();
+        $items = Item::all();
+        $target = Task::find($task);
+        $data = [
+            'ranks' => $ranks,
+            'categories' => $categories,
+            'groups' => $groups,
+            'items' => $items,
+            'target' => $target,
+        ];
+        return view('settings.task_edit', $data);
     }
 
     public function taskUpdate(Request $request, $task) {
         try {
             $target = Task::find($task);
             $target->update([
-                'name' => $request->name,
-                'eng_name' => $request->eng_name,
-                'icon' => $request->icon,
                 'rank_id' => $request->rank_id,
                 'category_id' => $request->category_id,
                 'group_id' => $request->group_id,
+                'item_id' => $request->item_id,
+                'text' => $request->text,
             ]);
             return redirect()->route('setting.task')->with('success', 'Task updated successfully');
         } catch (\Exception $e) {
             return redirect()->route('setting.task')->with('error', 'Task updated failed');
+        }
+    }
+
+    public function taskDestroy($task) {
+        try {
+            Task::destroy($task);
+            return redirect()->route('setting.task')->with('success', 'Task deleted successfully');
+        } catch (\Exception $e) {
+            return redirect()->route('setting.task')->with('error', 'Task deleted failed');
         }
     }
 }

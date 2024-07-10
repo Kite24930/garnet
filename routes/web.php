@@ -34,10 +34,14 @@ Route::middleware('auth')->group(function () {
         Route::post('/settings/category', [SettingController::class, 'categoryStore'])->name('setting.category.store');
         Route::get('/settings/group', [SettingController::class, 'group'])->name('setting.group');
         Route::post('/settings/group', [SettingController::class, 'groupStore'])->name('setting.group.store');
+        Route::get('/settings/item', [SettingController::class, 'item'])->name('setting.item');
+        Route::post('/settings/item', [SettingController::class, 'itemStore'])->name('setting.item.store');
         Route::get('/settings/task', [SettingController::class, 'task'])->name('setting.task');
         Route::get('/settings/task/new', [SettingController::class, 'taskNew'])->name('setting.task.new');
         Route::post('/settings/task', [SettingController::class, 'taskStore'])->name('setting.task.store');
+        Route::get('/settings/task/{task}', [SettingController::class, 'taskEdit'])->name('setting.task.edit');
         Route::patch('/settings/task/{task}', [SettingController::class, 'taskUpdate'])->name('setting.task.update');
+        Route::delete('/settings/task/{task}', [SettingController::class, 'taskDestroy'])->name('setting.task.destroy');
     });
 });
 

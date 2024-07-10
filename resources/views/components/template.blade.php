@@ -9,7 +9,11 @@
     <link rel="apple-touch-icon" href="{{ asset('storage/icon.png') }}">
     <meta name="robots" content="noindex,nofollow"> <!-- 管理画面なのでクロールしない -->
 
-    <title>{{ $title }} | {{ config('app.name', 'Laravel') }}</title>
+    @if($title)
+        <title>{{ $title }} | {{ config('app.name', 'Laravel') }}</title>
+    @else
+        <title>{{ config('app.name', 'Laravel') }}</title>
+    @endif
 
     <!-- Reset CSS -->
     <link rel="stylesheet" href="https://unpkg.com/sanitize.css">

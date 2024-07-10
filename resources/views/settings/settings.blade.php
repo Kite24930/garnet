@@ -16,6 +16,9 @@
             <x-parts.menu-item link="{{ route('setting.group') }}">
                 Group
             </x-parts.menu-item>
+            <x-parts.menu-item link="{{ route('setting.item') }}">
+                Item
+            </x-parts.menu-item>
             <x-parts.menu-item link="{{ route('setting.task') }}">
                 Task
             </x-parts.menu-item>
