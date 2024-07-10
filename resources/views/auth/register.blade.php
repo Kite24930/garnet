@@ -1,18 +1,18 @@
-<x-guest-layout>
-    <form method="POST" action="{{ route('register') }}">
+<x-template css="index.css" title="register">
+    <form method="POST" action="{{ route('register') }}" class="bg-gray-300 p-4 rounded-lg mt-4">
         @csrf
 
         <!-- Name -->
         <div>
             <x-input-label for="name" :value="__('Name')" />
-            <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
+            <x-text-input id="name" class="block mt-1 w-full text-gray-600" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
             <x-input-error :messages="$errors->get('name')" class="mt-2" />
         </div>
 
         <!-- Email Address -->
         <div class="mt-4">
             <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="username" />
+            <x-text-input id="email" class="block mt-1 w-full text-gray-600" type="email" name="email" :value="old('email')" required autocomplete="username" />
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
 
@@ -20,7 +20,7 @@
         <div class="mt-4">
             <x-input-label for="password" :value="__('Password')" />
 
-            <x-text-input id="password" class="block mt-1 w-full"
+            <x-text-input id="password" class="block mt-1 w-full text-gray-600"
                             type="password"
                             name="password"
                             required autocomplete="new-password" />
@@ -32,7 +32,7 @@
         <div class="mt-4">
             <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
 
-            <x-text-input id="password_confirmation" class="block mt-1 w-full"
+            <x-text-input id="password_confirmation" class="block mt-1 w-full text-gray-600"
                             type="password"
                             name="password_confirmation" required autocomplete="new-password" />
 
@@ -49,4 +49,5 @@
             </x-primary-button>
         </div>
     </form>
-</x-guest-layout>
+    @vite(['resources/js/index.js'])
+</x-template>
