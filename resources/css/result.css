@@ -1,0 +1,60 @@
+@import "index.css";
+#modal {
+  background: linear-gradient(45deg, #800000, #300000);
+}
+#modal .container {
+  animation: zoomUp 1s ease-in-out forwards;
+}
+#modal .rank-name {
+  animation: fadeIn 2s ease-in-out forwards;
+}
+#modal video {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+@keyframes zoomUp {
+  0% {
+    transform: scale(0);
+  }
+  90% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+.fadeOut {
+  animation: fadeOut 1s ease-in-out forwards;
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+.btn {
+  border-radius: 5px;
+  background: linear-gradient(145deg, #ffffff, #d6d6d6);
+  box-shadow: 5px 5px 15px #8f8f8f, -5px -5px 15px #ffffff;
+}
+.btn:hover {
+  background: linear-gradient(145deg, #d6d6d6, #ffffff);
+}
+
+/*# sourceMappingURL=result.css.map */

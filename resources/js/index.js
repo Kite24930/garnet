@@ -39,9 +39,3 @@ document.querySelectorAll('.btn-item').forEach((el) => {
         }, 1200)
     })
 });
-
-document.querySelectorAll('.btn').forEach((el) => {
-    el.addEventListener('click', () => {
-        el.classList.toggle('active');
-    });
-});

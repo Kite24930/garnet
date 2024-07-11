@@ -16,6 +16,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/entry', [EntryController::class, 'show'])->name('entry.show');
     Route::post('/entry', [EntryController::class, 'store'])->name('entry.store');
+    Route::get('/entry/result/{date}', [EntryController::class, 'result'])->name('entry.result');
 
     Route::get('/logs', [LogsController::class, 'show'])->name('logs.show');
     Route::get('/logs/{log}', [LogsController::class, 'view'])->name('logs.view');
