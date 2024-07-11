@@ -5,18 +5,18 @@
             <div class="garnet-line w-full"></div>
         </div>
         <div id="modal" class="fixed top-0 bottom-0 left-0 right-0 w-[100dvw] h-[100dvh] flex flex-col justify-center items-center z-30">
-            <div class="container flex flex-col items-center z-40">
+            <div id="container" class="flex flex-col items-center z-40">
                 <div class="text-8xl garnet z-40">GET</div>
                 <img src="{{ asset('storage/icons/'.$get_rank->icon) }}" alt="{{ $get_rank->eng_name }}" class="relative z-50">
             </div>
-            <div class="flex flex-col items-center justify-center rank-name z-40">
+            <div id="rank-name" class="flex flex-col items-center justify-center z-40">
                 <div class="text-6xl eng-italic px-4">
                     {{ $get_rank->eng_name }}
                 </div>
                 <div class="garnet-line w-full"></div>
             </div>
-            <video src="{{ asset('storage/modal_back.mp4') }}" class="absolute md:hidden a-30 w-[100dvw] h-[100dvh] object-cover" autoplay muted></video>
-            <video src="{{ asset('storage/modal_back_pc.mp4') }}" class="absolute md:block hidden z-30 h-[100dvh] w-[100dvw] object-cover" autoplay muted></video>
+            <video src="{{ asset('storage/modal_back.mp4') }}" class="absolute md:hidden a-30 w-[100dvw] h-[100dvh] object-cover" autoplay muted playsinline></video>
+            <video src="{{ asset('storage/modal_back_pc.mp4') }}" class="absolute md:block hidden z-30 h-[100dvh] w-[100dvw] object-cover" autoplay muted playsinline></video>
         </div>
         <div class="flex flex-col items-center gap-2 relative w-full max-w-md z-0">
             <div class="result-icon h-full flex flex-col justify-center items-center">
