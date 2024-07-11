@@ -59,11 +59,14 @@ class EntryController extends Controller
         $results = ResultView::where('date', $date)->where('user_id', auth()->id())->orderBy('rank_id', 'desc')->get();
         $rank_counts = ResultView::select('rank_id', DB::raw('count(*) as count'))->where('date', $date)->where('user_id', auth()->id())->groupBy('rank_id')->orderBy('rank_id', 'desc')->get();
         $target_rank = 1;
+        $addition = 0;
         foreach($rank_counts as $rank_count) {
-            if ($rank_count->count > 1) {
+            $judging = $addition + $rank_count->count;
+            if ($judging > 1) {
                 $target_rank = $rank_count->rank_id;
                 break;
             }
+            $addition += $rank_count->count;
         }
         $get_rank = Rank::find($target_rank);
         $data = [
