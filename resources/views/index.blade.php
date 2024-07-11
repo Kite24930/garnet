@@ -29,11 +29,20 @@
             @endcan
         </div>
     </div>
+    <a href="{{ route('profile.edit') }}" class="fixed bottom-4 right-4 py-2 px-4 bg-[#eeeeee60] rounded-lg flex items-center gap-2">
+        @if($user->icon)
+            <img src="{{ asset('storage/account/'.$user->id.'/'.$user->icon) }}" alt="{{ $user->name }}" class="w-8 h-8 object-cover rounded-full">
+        @else
+            <img src="{{ asset('storage/person-circle.svg') }}" alt="{{ $user->name }}" class="w-6 h-6">
+        @endif
+        <div class="text-sm">{{ $user->name }}</div>
+    </a>
     <script>
         window.Laravel = {};
         window.Laravel.access_log = @json($access_log);
         window.Laravel.start_of_day = @json($start_of_day);
         window.Laravel.end_of_day = @json($end_of_day);
+        window.Laravel.user = @json($user);
         console.log(window.Laravel);
     </script>
     @vite(['resources/js/index.js'])

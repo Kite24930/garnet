@@ -16,6 +16,7 @@ class MainController extends Controller
             'access_log' => $accessLog,
             'start_of_day' => now('Asia/Tokyo')->startOfDay(),
             'end_of_day' => now('Asia/Tokyo')->endOfDay(),
+            'user' => auth()->user(),
         ];
         return view('index', $data);
     }
