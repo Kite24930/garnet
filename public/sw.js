@@ -1,15 +1,15 @@
 const CACHE_NAME = 'garnet-cache-v1';
 const urlsToCache = [
     '/',
-    '/index.php',
-    '/storage/favicon.ico',
-    '/robots.txt',
-    '/storage/icon.png',
-    '/storage/icon-192x192.png',
-    '/storage/icon-512x512.png',
-    '/storage/modal-back.mp4',
-    '/storage/modal-back-pc.mp4',
-    '/storage/background.jpg',
+    // '/index.php',
+    // '/storage/favicon.ico',
+    // '/robots.txt',
+    // '/storage/icon.png',
+    // '/storage/icon-192x192.png',
+    // '/storage/icon-512x512.png',
+    // '/storage/modal-back.mp4',
+    // '/storage/modal-back-pc.mp4',
+    // '/storage/background.jpg',
 ];
 
 self.addEventListener('install', event => {
