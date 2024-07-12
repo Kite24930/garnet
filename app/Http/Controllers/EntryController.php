@@ -13,6 +13,7 @@ use App\Models\TaskCountView;
 use App\Models\TaskView;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Jenssegers\Agent\Agent;
 
 class EntryController extends Controller
 {
@@ -56,6 +57,8 @@ class EntryController extends Controller
     }
 
     public function result($date) {
+        $agent = new Agent();
+        $isMobile = $agent->isMobile();
         $results = ResultView::where('date', $date)->where('user_id', auth()->id())->orderBy('rank_id', 'desc')->get();
         $rank_counts = ResultView::select('rank_id', DB::raw('count(*) as count'))->where('date', $date)->where('user_id', auth()->id())->groupBy('rank_id')->orderBy('rank_id', 'desc')->get();
         $target_rank = 1;
@@ -73,6 +76,7 @@ class EntryController extends Controller
             'results' => $results,
             'rank_counts' => $rank_counts,
             'get_rank' => $get_rank,
+            'isMobile' => $isMobile,
         ];
         return view('entry.result', $data);
     }

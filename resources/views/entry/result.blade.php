@@ -15,8 +15,11 @@
                 </div>
                 <div class="garnet-line w-full"></div>
             </div>
-            <video src="{{ asset('storage/modal_back.mp4') }}" class="absolute md:hidden a-30 w-[100dvw] h-[100dvh] object-cover" autoplay muted playsinline></video>
-            <video src="{{ asset('storage/modal_back_pc.mp4') }}" class="absolute md:block hidden z-30 h-[100dvh] w-[100dvw] object-cover" autoplay muted playsinline></video>
+            @if($isMobile)
+                <video src="{{ asset('storage/modal_back.mp4') }}" class="absolute md:hidden a-30 w-[100dvw] h-[100dvh] object-cover" autoplay muted playsinline></video>
+            @else
+                <video src="{{ asset('storage/modal_back_pc.mp4') }}" class="absolute md:block hidden z-30 h-[100dvh] w-[100dvw] object-cover" autoplay muted playsinline></video>
+            @endif
         </div>
         <div class="flex flex-col items-center gap-2 relative w-full max-w-md z-0">
             <div class="result-icon h-full flex flex-col justify-center items-center">
@@ -61,6 +64,7 @@
         window.Laravel.results = @json($results);
         window.Laravel.rank_counts = @json($rank_counts);
         window.Laravel.get_rank = @json($get_rank);
+        window.Laravel.isMobile = @json($isMobile);
         console.log(window.Laravel);
     </script>
     @vite(['resources/js/entry/result.js'])
