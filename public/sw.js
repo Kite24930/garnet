@@ -10,23 +10,6 @@ const urlsToCache = [
     '/storage/modal-back.mp4',
     '/storage/modal-back-pc.mp4',
     '/storage/background.jpg',
-    '/resources/css/app.css',
-    '/resources/js/app.js',
-    '/resources/js/common.js',
-    '/resources/css/common.css',
-    '/resources/js/index.js',
-    '/resources/css/index.css',
-    '/resources/js/entry/entry.js',
-    '/resources/css/entry.css',
-    '/resources/js/entry/result.js',
-    '/resources/css/result.css',
-    '/resources/js/settings.js',
-    '/resources/css/settings.css',
-    '/resources/js/settings/rank.js',
-    '/resources/js/settings/category.js',
-    '/resources/js/settings/group.js',
-    '/resources/js/settings/item.js',
-    '/resources/js/settings/task.js',
 ];
 
 self.addEventListener('install', event => {
