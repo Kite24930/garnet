@@ -13,7 +13,7 @@ export default defineConfig({
         }),
         VitePWA({
             registerType: 'autoUpdate',
-            includeAssets: ['favicon.ico', 'robots.txt', 'apple-touch-icon.png', 'icons/*'],
+            includeAssets: ['/storage/favicon.ico', '/robots.txt', '/storage/icon.png', '/storage/icons/*'],
             manifest: {
                 name: 'GARNET',
                 short_name: 'GARNET',

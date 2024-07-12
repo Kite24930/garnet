@@ -10,7 +10,7 @@
     <meta name="robots" content="noindex,nofollow"> <!-- 管理画面なのでクロールしない -->
 
     <!-- Manifest -->
-    <link rel="manifest" href="{{ asset('manifest.json') }}">
+    <link rel="manifest" href="{{ asset('/build/manifest.json') }}">
 
     @if($title)
         <title>{{ $title }} | {{ config('app.name', 'Laravel') }}</title>
