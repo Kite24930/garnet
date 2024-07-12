@@ -1,5 +1,6 @@
 import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
+import { VitePWA } from "vite-plugin-pwa";
 
 export default defineConfig({
     plugins: [
@@ -10,6 +11,31 @@ export default defineConfig({
             ],
             refresh: true,
         }),
+        VitePWA({
+            registerType: 'autoUpdate',
+            includeAssets: ['favicon.ico', 'robots.txt', 'apple-touch-icon.png', 'icons/*'],
+            manifest: {
+                name: 'GARNET',
+                short_name: 'GARNET',
+                description: 'GARNET is a web application that helps you to manage your tasks and goals.',
+                start_url: '/',
+                display: 'standalone',
+                background_color: '#600000',
+                theme_color: '#800000',
+                icons: [
+                    {
+                        src: '/storage/icon-192x192.png',
+                        sizes: '192x192',
+                        type: 'image/png',
+                    },
+                    {
+                        src: '/storage/icon-512x512.png',
+                        sizes: '512x512',
+                        type: 'image/png',
+                    },
+                ],
+            },
+        })
     ],
     build: {
         manifest: 'manifest.json',

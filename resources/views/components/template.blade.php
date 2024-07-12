@@ -9,6 +9,9 @@
     <link rel="apple-touch-icon" href="{{ asset('storage/icon.png') }}">
     <meta name="robots" content="noindex,nofollow"> <!-- 管理画面なのでクロールしない -->
 
+    <!-- Manifest -->
+    <link rel="manifest" href="{{ asset('manifest.json') }}">
+
     @if($title)
         <title>{{ $title }} | {{ config('app.name', 'Laravel') }}</title>
     @else
