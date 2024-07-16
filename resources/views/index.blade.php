@@ -1,6 +1,6 @@
 <x-template css="index.css">
     <div class="w-full h-full flex flex-col items-center justify-center p-4 gap-10">
-{{--        @if($access_log === 0)--}}
+        @if($access_log === 0)
             <div id="logo-area" class="absolute top-0 bottom-0 right-0 left-0 w-full h-full flex items-center justify-center z-40 bg-garnet">
                 <div id="logo" class="flex flex-col items-center gap-2 relative z-50">
                     <img src="{{ asset('storage/icon.png') }}" alt="GARNET" class="garnet-logo">
@@ -9,8 +9,8 @@
                     <div class="garnet-line"></div>
                 </div>
             </div>
-{{--        @endif--}}
-        <div class="flex flex-col items-center justify-center text-4xl gap-8 w-full">
+        @endif
+        <div class="flex flex-col items-center justify-center text-4xl gap-8 w-full mb-12">
             <x-parts.menu-item link="{{ route('entry.show') }}">
                 Entry
             </x-parts.menu-item>

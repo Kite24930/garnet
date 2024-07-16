@@ -72,6 +72,8 @@ export default defineConfig({
                 entryStyle: 'resources/css/entry.css',
                 result: 'resources/js/entry/result.js',
                 resultStyle: 'resources/css/result.css',
+                logs: 'resources/js/log/logs.js',
+                logsStyle: 'resources/css/logs.css',
                 settings: 'resources/js/settings.js',
                 settingsStyle: 'resources/css/settings.css',
                 rank: 'resources/js/settings/rank.js',

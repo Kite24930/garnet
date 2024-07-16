@@ -1,7 +1,5 @@
 const CACHE_NAME = 'garnet-cache-v1';
 const urlsToCache = [
-    '/',
-    '/index.php',
     '/storage/favicon.ico',
     '/robots.txt',
     '/storage/icon.png',
