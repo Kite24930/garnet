@@ -39,7 +39,9 @@
             @endforeach
         </div>
         <div class="flex flex-col items-center justify-center w-full mb-6 gap-4">
-            <a href="{{ route('entry.show', $date) }}" class="btn duration-500 px-4 py-2 text-gray-600">EDIT</a>
+            @if($user->id === auth()->id())
+                <a href="{{ route('entry.show', $date) }}" class="btn duration-500 px-4 py-2 text-gray-600">EDIT</a>
+            @endif
             <a href="{{ route('index') }}" class="btn duration-500 px-4 py-2 text-gray-600">TOP PAGE</a>
         </div>
     </div>
