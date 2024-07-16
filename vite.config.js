@@ -20,6 +20,7 @@ export default defineConfig({
                 description: 'GARNET is a web application that helps you to manage your tasks and goals.',
                 lang: 'ja',
                 start_url: '/',
+                scope: '/',
                 display: 'standalone',
                 background_color: '#600000',
                 theme_color: '#800000',

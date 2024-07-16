@@ -10,8 +10,6 @@ const urlsToCache = [
     '/storage/modal-back.mp4',
     '/storage/modal-back-pc.mp4',
     '/storage/background.jpg',
-    // '/storage/modal-back.mp4',
-    // '/storage/modal-back-pc.mp4',
 ];
 
 self.addEventListener('install', event => {
