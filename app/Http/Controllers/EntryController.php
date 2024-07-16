@@ -19,20 +19,26 @@ class EntryController extends Controller
 {
     //
 
-    public function show() {
+    public function show($date = null) {
+        if ($date == null) {
+            $date = date('Y-m-d');
+        }
         $ranks = Rank::all();
         $categories = Category::all();
         $groups = Group::all();
         $items = Item::all();
         $tasks = TaskView::orderBy('category_id')->orderBy('group_id')->orderBy('item_id')->orderBy('rank_id')->get();
         $task_counts = TaskCountView::all();
+        $entered_tasks = ResultView::where('date', $date)->where('user_id', auth()->id())->get();
         $data = [
             'ranks' => $ranks,
             'categories' => $categories,
             'groups' => $groups,
             'items' => $items,
             'tasks' => $tasks,
-            'task_counts' => $task_counts
+            'task_counts' => $task_counts,
+            'date' => $date,
+            'entered_tasks' => $entered_tasks,
         ];
         return view('entry.entry', $data);
     }

@@ -5,7 +5,7 @@
                 <div class="px-4 text-4xl garnet">ENTRY</div>
                 <div class="garnet-line w-full"></div>
             </div>
-            <input id="date" type="date" value="{{ date('Y-m-d') }}" class="bg-transparent border-transparent mt-2 rounded-lg">
+            <input id="date" type="date" value="{{ $date }}" class="bg-transparent border-transparent mt-2 rounded-lg" data-link="{{ route('entry.show') }}">
         </div>
         @if(session('error'))
             <div class="text-red-500 text-sm">
@@ -53,7 +53,7 @@
                     </div>
                     <div class="flex w-full gap-4 flex-wrap justify-center items-center mb-4">
                 @endif
-                <div class="flex flex-col justify-center items-center gap-2 py-4 px-2 btn duration-500 w-[30%] relative" data-rank="{{ $task->rank_id }}" data-category="{{ $task->category_id }}" data-group="{{ $task->group_id }}" data-item="{{ $task->item_id }}" data-task="{{ $task->task_id }}">
+                <div class="flex flex-col justify-center items-center gap-2 py-4 px-2 btn duration-500 w-[28%] relative" data-rank="{{ $task->rank_id }}" data-category="{{ $task->category_id }}" data-group="{{ $task->group_id }}" data-item="{{ $task->item_id }}" data-task="{{ $task->task_id }}">
                     <div class="flex flex-col justify-center items-center relative">
                         <img src="{{ asset('storage/icons/'.$task->rank_icon) }}" alt="{{ $task->rank_eng_name }}" class="w-12">
                         <div class="eng-italic text-xs">
@@ -91,6 +91,7 @@
         window.Laravel.items = @json($items);
         window.Laravel.tasks = @json($tasks);
         window.Laravel.task_counts = @json($task_counts);
+        window.Laravel.entered_tasks = @json($entered_tasks);
         console.log(window.Laravel);
     </script>
     @vite(['resources/js/entry/entry.js'])

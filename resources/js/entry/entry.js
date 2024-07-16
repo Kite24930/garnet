@@ -1,5 +1,17 @@
 import '../index.js';
 
+window.addEventListener('load', () => {
+    Laravel.entered_tasks.forEach((task) => {
+        document.querySelectorAll(`.btn[data-category="${task.category_id}"][data-group="${task.group_id}"][data-item="${task.item_id}"]`).forEach((el) => {
+            if (el.getAttribute('data-rank') <= task.rank_id) {
+                el.classList.add('active');
+                el.querySelector('.bullet-hole').classList.remove('hidden');
+                el.querySelector('label').classList.remove('hidden');
+            }
+        });
+    });
+});
+
 document.querySelectorAll('.btn').forEach((el) => {
     const rank_id = el.getAttribute('data-rank');
     const category_id = el.getAttribute('data-category');
@@ -65,3 +77,15 @@ document.getElementById('entry').addEventListener('click', () => {
             console.log(error);
         });
 })
+
+document.getElementById('date').addEventListener('change', (e) => {
+    document.body.classList.remove('fade-in', 'opacity-0');
+    document.body.classList.add('fade-out');
+    const targetDate = e.target.value;
+    const targetLink = e.target.getAttribute('data-link');
+    setTimeout(() => {
+        const a = document.createElement('a');
+        a.href = targetLink + '/' + targetDate;
+        a.click();
+    }, 600)
+});

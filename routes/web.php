@@ -14,7 +14,7 @@ Route::get('/dashboard', function () {
 Route::middleware('auth')->group(function () {
     Route::get('/', [MainController::class, 'index'])->name('index');
 
-    Route::get('/entry', [EntryController::class, 'show'])->name('entry.show');
+    Route::get('/entry/{date?}', [EntryController::class, 'show'])->name('entry.show');
     Route::post('/entry', [EntryController::class, 'store'])->name('entry.store');
     Route::get('/entry/result/{date}', [EntryController::class, 'result'])->name('entry.result');
 
