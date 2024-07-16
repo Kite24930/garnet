@@ -26,6 +26,7 @@
     ExpiresByType application/javascript "access plus 3 seconds"
     ExpiresByType image/png "access plus 1 week"
     ExpiresByType image/jpeg "access plus 1 week"
+    ExpiresByType video/mp4 "access plus 1 year"
 </IfModule>
 
 <IfModule mod_headers.c>
@@ -36,5 +37,8 @@
     </FilesMatch>
     <FilesMatch "\.(png|jpeg)$">
         Header set Cache-Control "max-age=604800, public"
+    </FilesMatch>
+    <FilesMatch "\.(mp4)$">
+        Header set Cache-Control "max-age=31536000, public"
     </FilesMatch>
 </IfModule>

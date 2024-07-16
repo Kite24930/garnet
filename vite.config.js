@@ -37,6 +37,25 @@ export default defineConfig({
                     },
                 ],
             },
+            workbox: {
+                cleanupOutdatedCaches: true,
+                skipWaiting: true,
+                clientsClaim: true,
+                navigateFallback: '/',
+                runtimeCaching: [
+                    {
+                        urlPattern: /^https:\/\/garnets\.tech\/.*\.(?:css|js)$/,
+                        handler: 'NetworkFirst',
+                        options: {
+                            cacheName: 'garnet-cache-v1',
+                            expiration: {
+                                maxEntries: 100,
+                                maxAgeSeconds: 60,
+                            },
+                        },
+                    },
+                ],
+            }
         })
     ],
     build: {
