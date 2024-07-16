@@ -4,16 +4,20 @@ namespace App\Http\Controllers;
 
 use App\Models\Rank;
 use App\Models\ResultView;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class LogsController extends Controller
 {
-    public function show($year = null, $month = null) {
+    public function show($year = null, $month = null, $user = null) {
         if ($year === null || $month === null) {
             $year = date('Y');
             $month = date('m');
+        }
+        if ($user === null) {
+            $user = auth()->id();
         }
         $start_of_month = Carbon::create($year, $month, 1);
         $end_of_month = $start_of_month->copy()->endOfMonth();
@@ -28,7 +32,7 @@ class LogsController extends Controller
 
         $current_date = $start_of_calendar->copy();
         while ($current_date->lte($end_of_calendar)) {
-            $result_counts = ResultView::where('date', $current_date->format('Y-m-d'))->where('user_id', auth()->id())->count();
+            $result_counts = ResultView::where('date', $current_date->format('Y-m-d'))->where('user_id', $user)->count();
             if ($result_counts === 0) {
                 $dates[] = [
                     'date' => $current_date->format('Y-m-d'),
@@ -38,8 +42,8 @@ class LogsController extends Controller
                 $current_date->addDay();
                 continue;
             }
-            $results = ResultView::where('date', $current_date->format('Y-m-d'))->where('user_id', auth()->id())->orderBy('rank_id', 'desc')->get();
-            $rank_counts = ResultView::select('rank_id', DB::raw('count(*) as count'))->where('date', $current_date->format('Y-m-d'))->where('user_id', auth()->id())->groupBy('rank_id')->orderBy('rank_id', 'desc')->get();
+            $results = ResultView::where('date', $current_date->format('Y-m-d'))->where('user_id', $user)->orderBy('rank_id', 'desc')->get();
+            $rank_counts = ResultView::select('rank_id', DB::raw('count(*) as count'))->where('date', $current_date->format('Y-m-d'))->where('user_id', $user)->groupBy('rank_id')->orderBy('rank_id', 'desc')->get();
             $target_rank = 1;
             $addition = 0;
             foreach($rank_counts as $rank_count) {
@@ -68,13 +72,15 @@ class LogsController extends Controller
             'prev_month' => $prev_month,
             'next_month' => $next_month,
             'weekdays' => $weekdays,
+            'user' => User::find($user),
+            'users' => User::all(),
         ];
         return view('logs.logs', $data);
     }
 
-    public function view($log) {
-        $results = ResultView::where('date', $log)->where('user_id', auth()->id())->orderBy('rank_id', 'desc')->get();
-        $rank_counts = ResultView::select('rank_id', DB::raw('count(*) as count'))->where('date', $log)->where('user_id', auth()->id())->groupBy('rank_id')->orderBy('rank_id', 'desc')->get();
+    public function view($log, $user) {
+        $results = ResultView::where('date', $log)->where('user_id', $user)->orderBy('rank_id', 'desc')->get();
+        $rank_counts = ResultView::select('rank_id', DB::raw('count(*) as count'))->where('date', $log)->where('user_id', $user)->groupBy('rank_id')->orderBy('rank_id', 'desc')->get();
         $target_rank = 1;
         $addition = 0;
         foreach($rank_counts as $rank_count) {
@@ -87,6 +93,7 @@ class LogsController extends Controller
         }
         $get_rank = Rank::find($target_rank);
         $data = [
+            'user' => User::find($user),
             'results' => $results,
             'rank_counts' => $rank_counts,
             'get_rank' => $get_rank,

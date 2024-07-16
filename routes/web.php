@@ -18,8 +18,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/entry', [EntryController::class, 'store'])->name('entry.store');
     Route::get('/entry/result/{date}', [EntryController::class, 'result'])->name('entry.result');
 
-    Route::get('/logs/{year?}/{month?}', [LogsController::class, 'show'])->name('logs.show');
-    Route::get('/view/logs/{log}', [LogsController::class, 'view'])->name('logs.view');
+    Route::get('/logs/{year?}/{month?}/{user?}', [LogsController::class, 'show'])->name('logs.show');
+    Route::get('/view/logs/{log}/{user}', [LogsController::class, 'view'])->name('logs.view');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
