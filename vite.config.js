@@ -18,6 +18,7 @@ export default defineConfig({
                 name: 'GARNET',
                 short_name: 'GARNET',
                 description: 'GARNET is a web application that helps you to manage your tasks and goals.',
+                lang: 'ja',
                 start_url: '/',
                 display: 'standalone',
                 background_color: '#600000',
