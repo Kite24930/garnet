@@ -12,6 +12,9 @@
     <!-- Manifest -->
     <link rel="manifest" href="{{ asset('/build/manifest.json') }}">
 
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
     @if($title)
         <title>{{ $title }} | {{ config('app.name', 'Laravel') }}</title>
     @else
@@ -27,7 +30,7 @@
         @vite(['resources/css/'.$css])
     @endif
 </head>
-<body class="min-h-screen flex flex-col justify-center items-center relative opacity-0">
+<body class="min-h-[100dvh] flex flex-col justify-center items-center relative opacity-0">
 <header>
     <div class="flex justify-center mt-4 mb-2">
         <a href="{{ route('index') }}" class="flex flex-col gap-2 items-center">
