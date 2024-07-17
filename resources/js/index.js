@@ -21,6 +21,32 @@ window.addEventListener('load', () => {
             document.getElementById('logo-area').remove();
         }, 6000);
     }
+    const newMission = document.getElementById('new-mission');
+    if (newMission) {
+        if (logoArea) {
+            setTimeout(() => {
+                newMission.classList.add('fade-out');
+            }, 6500);
+            setTimeout(() => {
+                newMission.remove();
+            }, 7500);
+        } else {
+            setTimeout(() => {
+                newMission.classList.add('fade-out');
+            }, 1500);
+            setTimeout(() => {
+                newMission.remove();
+            }, 2500);
+        }
+    }
+    const mission = document.querySelectorAll('.mission');
+    if (mission.length > 0) {
+        mission.forEach(el => {
+            setTimeout(() => {
+                el.classList.add('blink');
+            }, 500)
+        })
+    }
 })
 
 document.querySelectorAll('.btn-item').forEach((el) => {

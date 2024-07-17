@@ -42,6 +42,12 @@ Route::middleware('auth')->group(function () {
         Route::get('/settings/task/{task}', [SettingController::class, 'taskEdit'])->name('setting.task.edit');
         Route::patch('/settings/task/{task}', [SettingController::class, 'taskUpdate'])->name('setting.task.update');
         Route::delete('/settings/task/{task}', [SettingController::class, 'taskDestroy'])->name('setting.task.destroy');
+        Route::get('/settings/mission', [SettingController::class, 'mission'])->name('setting.mission');
+        Route::get('/settings/mission/new', [SettingController::class, 'missionNew'])->name('setting.mission.new');
+        Route::post('/settings/mission/new', [SettingController::class, 'missionStore'])->name('setting.mission.store');
+        Route::get('/settings/mission/edit/{mission}', [SettingController::class, 'missionEdit'])->name('setting.mission.edit');
+        Route::patch('/settings/mission/edit/{mission}', [SettingController::class, 'missionUpdate'])->name('setting.mission.update');
+        Route::delete('/settings/mission/{mission}', [SettingController::class, 'missionDestroy'])->name('setting.mission.destroy');
     });
 });
 

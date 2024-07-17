@@ -5,10 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Group;
 use App\Models\Item;
+use App\Models\Mission;
+use App\Models\MissionView;
 use App\Models\Rank;
 use App\Models\Task;
 use App\Models\TaskView;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class SettingController extends Controller
@@ -197,6 +201,77 @@ class SettingController extends Controller
             return redirect()->route('setting.task')->with('success', 'Task deleted successfully');
         } catch (\Exception $e) {
             return redirect()->route('setting.task')->with('error', 'Task deleted failed');
+        }
+    }
+
+    public function mission() {
+        $missions = MissionView::orderBy('start_date', 'desc')->get();
+        $data = [
+            'missions' => $missions,
+        ];
+        return view('settings.mission', $data);
+    }
+
+    public function missionNew () {
+        $tasks = TaskView::orderBy('category_id')->orderBy('group_id')->orderBy('item_id')->orderBy('rank_id')->get();
+        $users = User::all();
+        $data = [
+            'tasks' => $tasks,
+            'users' => $users,
+        ];
+        return view('settings.mission_new', $data);
+    }
+
+    public function missionStore (Request $request) {
+        try {
+            DB::beginTransaction();
+            foreach ($request->user_id as $user_id) {
+                Mission::create([
+                    'user_id' => $user_id,
+                    'message' => $request->message,
+                    'start_date' => $request->start_date,
+                    'due_date' => $request->due_date,
+                    'sent_from' => auth()->id(),
+                ]);
+            }
+            DB::commit();
+            return redirect()->route('setting.mission')->with('success', 'Mission added successfully');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->route('setting.mission')->with('error', 'Mission added failed')->with('message', $e->getMessage())->with('request', $request->all());
+        }
+    }
+
+    public function missionEdit ($mission) {
+        $mission = MissionView::where('id', $mission)->first();
+        $users = User::all();
+        $data = [
+            'mission' => $mission,
+            'users' => $users,
+        ];
+        return view('settings.mission_edit', $data);
+    }
+
+    public function missionUpdate (Request $request, $mission) {
+        try {
+            $mission = Mission::find($mission);
+            $mission->update([
+                'message' => $request->message,
+                'start_date' => $request->start_date,
+                'due_date' => $request->due_date,
+            ]);
+            return redirect()->route('setting.mission')->with('success', 'Mission updated successfully');
+        } catch (\Exception $e) {
+            return redirect()->route('setting.mission')->with('error', 'Mission updated failed')->with('message', $e->getMessage())->with('request', $request->all());
+        }
+    }
+
+    public function missionDestroy ($mission) {
+        try {
+            Mission::destroy($mission);
+            return redirect()->route('setting.mission')->with('success', 'Mission deleted successfully');
+        } catch (\Exception $e) {
+            return redirect()->route('setting.mission')->with('error', 'Mission deleted failed')->with('message', $e->getMessage());
         }
     }
 }

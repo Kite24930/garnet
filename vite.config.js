@@ -81,6 +81,7 @@ export default defineConfig({
                 group: 'resources/js/settings/group.js',
                 item: 'resources/js/settings/item.js',
                 task: 'resources/js/settings/task.js',
+                mission: 'resources/js/settings/mission.js',
             },
         }
     },

@@ -16,7 +16,10 @@
                             <input id="{{ __('rankIcon_'.$rank->id) }}" type="hidden" value="{{ $rank->icon }}">
                             <input id="{{ __('rankEngName_'.$rank->id) }}" type="text" class="eng-italic text-gray-600 text-sm w-28 text-center rounded active:border-blue-500" value="{{ $rank->eng_name }}" />
                         </div>
-                        <input id="{{ __('rankName_'.$rank->id) }}" type="text" class="text-xl text-gray-600 max-w-40 rounded active:border-blue-500" value="{{ $rank->name }}" />
+                        <div class="flex flex-col items-center justify-center">
+                            <input id="{{ __('rankName_'.$rank->id) }}" type="text" class="text-xl text-gray-600 max-w-40 rounded active:border-blue-500" value="{{ $rank->name }}" />
+                            <input id="{{ __('rankJaName_'.$rank->id) }}" type="text" class="text-xl text-gray-600 max-w-40 rounded active:border-blue-500" value="{{ $rank->ja_name }}" />
+                        </div>
                     </div>
                 @endforeach
             </form>

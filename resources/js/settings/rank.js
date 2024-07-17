@@ -61,11 +61,19 @@ document.getElementById('addBtn').addEventListener('click', () => {
     rankEngInput.classList.add('eng-italic', 'text-gray-600', 'text-sm', 'w-28', 'text-center', 'rounded', 'active:border-blue-500');
     iconContainer.appendChild(rankEngInput);
     iconWrapper.appendChild(iconContainer);
+    const nameContainer = document.createElement('div');
+    nameContainer.classList.add('flex', 'flex-col', 'items-center', 'justify-center');
     const rankNameInput = document.createElement('input');
     rankNameInput.type = 'text';
     rankNameInput.id = 'rankName_' + rankCount;
     rankNameInput.classList.add('text-xl', 'text-gray-600', 'max-w-40', 'rounded', 'active:border-blue-500');
-    iconWrapper.appendChild(rankNameInput);
+    nameContainer.appendChild(rankNameInput);
+    const rankJaNameInput = document.createElement('input');
+    rankJaNameInput.type = 'text';
+    rankJaNameInput.id = 'rankJaName_' + rankCount;
+    rankJaNameInput.classList.add('text-xl', 'text-gray-600', 'max-w-40', 'rounded', 'active:border-blue-500');
+    nameContainer.appendChild(rankJaNameInput);
+    iconWrapper.appendChild(nameContainer);
     rankForm.appendChild(iconWrapper);
     Laravel.count++;
 });
@@ -81,6 +89,7 @@ document.getElementById('saveBtn').addEventListener('click', () => {
         const rankIcon = document.getElementById('rankIcon_' + i);
         const rankEngName = document.getElementById('rankEngName_' + i);
         const rankName = document.getElementById('rankName_' + i);
+        const rankJaName = document.getElementById('rankJaName_' + i);
         if (ranKIconFile.files.length > 0) {
             formData.append(`icon_${i}`, ranKIconFile.files[0]);
         }
@@ -88,6 +97,7 @@ document.getElementById('saveBtn').addEventListener('click', () => {
         formData.append(`ranks[${i}][icon]`, rankIcon.value);
         formData.append(`ranks[${i}][eng_name]`, rankEngName.value);
         formData.append(`ranks[${i}][name]`, rankName.value);
+        formData.append(`ranks[${i}][ja_name]`, rankJaName.value);
     }
     try {
         axios.post(formAction, formData, {
