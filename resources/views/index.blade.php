@@ -45,7 +45,7 @@
                 @endif
             </div>
         @endif
-        <div class="flex flex-col items-center justify-center text-4xl gap-8 w-full mb-12">
+        <div class="flex flex-col items-center justify-center text-4xl gap-4 w-full mb-12">
             <x-parts.menu-item link="{{ route('entry.show') }}">
                 Entry
             </x-parts.menu-item>
@@ -64,7 +64,17 @@
             @endcan
         </div>
     </div>
-    <a href="{{ route('profile.edit') }}" class="fixed bottom-4 right-4 py-2 px-4 bg-[#eeeeee60] rounded-lg flex items-center gap-2 z-20">
+    <a href="{{ route('mypage') }}" class="fixed bottom-4 right-4 py-2 px-4 bg-[#eeeeee60] rounded-lg flex items-center gap-2 z-20">
+        @if($unread_messages > 0)
+            <div class="absolute -top-9 -right-2 unread-message">
+                <div class="h-8 w-8 relative flex justify-center items-center">
+                    <img src="{{ asset('storage/chat.svg') }}" alt="" class="h-8 w-auto">
+                    <div class="text-sm garnet absolute left-0 right-0 top-0 bottom-0 flex justify-center items-center">
+                        {{ $unread_messages }}
+                    </div>
+                </div>
+            </div>
+        @endif
         @if($user->icon)
             <img src="{{ asset('storage/account/'.$user->id.'/'.$user->icon) }}" alt="{{ $user->name }}" class="w-8 h-8 object-cover rounded-full">
         @else

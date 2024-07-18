@@ -27,6 +27,16 @@ Route::middleware('auth')->group(function () {
     Route::post('/profile/icon', [ProfileController::class, 'icon'])->name('profile.icon');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
+    Route::get('/mypage', [MainController::class, 'mypage'])->name('mypage');
+    Route::get('/messages', [MainController::class, 'messages'])->name('messages');
+    Route::get('/message/view/{message}', [MainController::class, 'messageView'])->name('message.view');
+    Route::get('/message/list', [MainController::class, 'messageList'])->name('message.list');
+    Route::get('/message/send', [MainController::class, 'messageSend'])->name('message.send');
+    Route::post('/message/send', [MainController::class, 'messageStore'])->name('message.store');
+    Route::get('/message/edit/{message}', [MainController::class, 'messageEdit'])->name('message.edit');
+    Route::patch('/message/edit/{message}', [MainController::class, 'messageUpdate'])->name('message.update');
+    Route::delete('/message/{message}', [MainController::class, 'messageDestroy'])->name('message.destroy');
+
     Route::post('/get/vapid_key', [MainController::class, 'getVapidKey'])->name('get.vapid_key');
     Route::post('/register/notification/token', [MainController::class, 'registerNotificationToken'])->name('register.notification.token');
 

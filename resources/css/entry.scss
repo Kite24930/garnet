@@ -61,13 +61,3 @@ table {
     left: 50%;
     transform: translate(-50%, -50%);
 }
-
-.entry-btn {
-    border-radius: 5px;
-    background: linear-gradient(145deg, #ffffff, #d6d6d6);
-    box-shadow:  5px 5px 15px #8f8f8f,
-    -5px -5px 15px #ffffff;
-    &:hover {
-        background: linear-gradient(145deg, #d6d6d6, #ffffff);
-    }
-}

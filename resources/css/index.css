@@ -1,3 +1,4 @@
+@import 'quill/dist/quill.snow.css';
 .bg-garnet {
   background: linear-gradient(45deg, #800000, #300000);
 }
@@ -113,6 +114,56 @@
   100% {
     opacity: 1;
   }
+}
+.unread-message {
+  animation: bounds 0.5s ease-in-out infinite alternate;
+}
+
+@keyframes bounds {
+  0% {
+    top: -30px;
+    transform: scaleX(1.3) scaleY(0.7);
+  }
+  40% {
+    transform: scaleX(1) scaleY(1);
+  }
+  100% {
+    top: -50px;
+  }
+}
+.new-message {
+  animation: newBounds 0.5s ease-in-out infinite alternate;
+}
+
+@keyframes newBounds {
+  0% {
+    top: 0;
+    transform: scaleX(1.3) scaleY(0.7);
+  }
+  40% {
+    transform: scaleX(1) scaleY(1);
+  }
+  100% {
+    top: -10px;
+  }
+}
+.entry-btn {
+  border-radius: 5px;
+  background: linear-gradient(145deg, #ffffff, #d6d6d6);
+  box-shadow: 5px 5px 15px #8f8f8f, -5px -5px 15px #ffffff;
+}
+.entry-btn:hover {
+  background: linear-gradient(145deg, #d6d6d6, #ffffff);
+}
+
+div.ql-toolbar.ql-snow {
+  background-color: #eee;
+}
+div.ql-toolbar.ql-snow .ql-size .ql-picker-label:before {
+  color: #333;
+}
+div.ql-toolbar.ql-snow .ql-size .ql-picker-item:not(.ql-selected):before {
+  color: #333;
 }
 
 /*# sourceMappingURL=index.css.map */

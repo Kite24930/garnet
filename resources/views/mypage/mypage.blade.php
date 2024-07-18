@@ -1,38 +1,53 @@
 <x-template css="index.css" title="Mypage">
-    <div class="w-full h-full flex flex-col items-center justify-center p-4 gap-10">
-        <div class="flex flex-col items-center justify-center text-4xl gap-8 w-full mb-12">
-            <x-parts.menu-item link="{{ route('entry.show') }}">
-                Entry
+    <div class="relative w-full h-full flex flex-col items-center justify-center p-4 gap-10">
+        <div>
+            <div class="flex flex-col gap-1 items-center">
+                <div class="px-4 text-4xl garnet">MY PAGE</div>
+                <div class="garnet-line w-full"></div>
+            </div>
+        </div>
+        <div class="flex flex-col items-center justify-center text-4xl gap-4 w-full mb-12">
+            <button id="notificationCheck" class="flex flex-col items-center cursor-pointer text-2xl duration-500">
+                <div class="py-1 px-4 flex justify-center items-center eng-title">
+                    通知を許可する
+                </div>
+                <div class="garnet-line"></div>
+            </button>
+            <x-parts.menu-item link="{{ route('messages') }}">
+                Message
+                @if($unread_messages > 0)
+                    <div class="relative h-10 ml-2 w-7 new-message">
+                        <img src="{{ asset('storage/chat.svg') }}" alt="" class="absolute h-7 w-auto top-0">
+                        <div class="absolute text-sm garnet top-[5px] w-7 text-center">
+                            {{ $unread_messages }}
+                        </div>
+                        <div class="absolute text-xs bottom-0 w-7 garnet text-center">
+                            new
+                        </div>
+                    </div>
+                @endif
             </x-parts.menu-item>
-            <x-parts.menu-item link="{{ route('logs.show') }}">
-                Logs
+            <x-parts.menu-item link="{{ route('profile.edit') }}">
+                Profile
             </x-parts.menu-item>
-            @can('access to user')
-                <x-parts.menu-item link="{{ route('profile.edit') }}">
-                    Profile
+            @can('access to admin')
+                <x-parts.menu-item link="{{ route('message.list') }}">
+                    Message List
                 </x-parts.menu-item>
             @endcan
-            @can('access to admin')
-                <x-parts.menu-item link="{{ route('setting.show') }}">
-                    Settings
+            @can('access to captain')
+                <x-parts.menu-item link="{{ route('message.list') }}">
+                    Message List
                 </x-parts.menu-item>
             @endcan
         </div>
     </div>
-    <a href="{{ route('profile.edit') }}" class="fixed bottom-4 right-4 py-2 px-4 bg-[#eeeeee60] rounded-lg flex items-center gap-2">
-        @if($user->icon)
-            <img src="{{ asset('storage/account/'.$user->id.'/'.$user->icon) }}" alt="{{ $user->name }}" class="w-8 h-8 object-cover rounded-full">
-        @else
-            <img src="{{ asset('storage/person-circle.svg') }}" alt="{{ $user->name }}" class="w-6 h-6">
-        @endif
-        <div class="text-sm">{{ $user->name }}</div>
-    </a>
+    <div class="hidden h-0"></div>
     <script>
         window.Laravel = {};
-        window.Laravel.access_log = @json($access_log);
-        window.Laravel.start_of_day = @json($start_of_day);
-        window.Laravel.end_of_day = @json($end_of_day);
         window.Laravel.user = @json($user);
+        window.Laravel.messages = @json($messages);
+        window.Laravel.unread_messages = @json($unread_messages);
         console.log(window.Laravel);
     </script>
     @vite(['resources/js/mypage/mypage.js'])
