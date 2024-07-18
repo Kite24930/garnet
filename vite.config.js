@@ -62,7 +62,6 @@ export default defineConfig({
         manifest: 'manifest.json',
         rollupOptions: {
             input: {
-                // firebaseMessaging: 'resources/js/firebase-messaging-sw.js',
                 app: 'resources/js/app.js',
                 appStyle: 'resources/css/app.css',
                 common: 'resources/js/common.js',
