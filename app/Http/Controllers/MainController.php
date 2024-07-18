@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\AccessLog;
 use App\Models\Message;
 use App\Models\Mission;
+use App\Models\Notification;
 use Illuminate\Http\Request;
 
 class MainController extends Controller
@@ -36,5 +37,34 @@ class MainController extends Controller
 
     public function mypage () {
 
+    }
+
+    public function getVapidKey () {
+        return response()->json([
+            'vapid_kay' => env('VAPID_KEY'),
+        ]);
+    }
+
+    public function registerNotificationToken(Request $request) {
+        try {
+            $user = auth()->user();
+            $isExist = Notification::where('user_id', $user->id)->where('token', $request->token)->exists();
+            if (!$isExist) {
+                Notification::create([
+                    'user_id' => $user->id,
+                    'token' => $request->token,
+                ]);
+            }
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Notification token registered successfully',
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Notification token registration failed',
+                'error' => $e->getMessage(),
+            ]);
+        }
     }
 }

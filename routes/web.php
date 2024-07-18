@@ -5,6 +5,7 @@ use App\Http\Controllers\LogsController;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SettingController;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/dashboard', function () {
@@ -25,6 +26,9 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::post('/profile/icon', [ProfileController::class, 'icon'])->name('profile.icon');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    Route::post('/get/vapid_key', [MainController::class, 'getVapidKey'])->name('get.vapid_key');
+    Route::post('/register/notification/token', [MainController::class, 'registerNotificationToken'])->name('register.notification.token');
 
     Route::group(['middleware' => ['role:admin']], function () {
         Route::get('/settings', [SettingController::class, 'show'])->name('setting.show');

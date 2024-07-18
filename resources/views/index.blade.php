@@ -11,7 +11,7 @@
             </div>
         @endif
         @if($new_mission > 0)
-            <div id="new-mission" class="fixed top-0 bottom-0 left-0 right-0 flex justify-center items-center z-30">
+            <div id="new-mission" class="fixed top-0 bottom-0 left-0 right-0 flex justify-center items-center z-30 h-[100dvh] w-[100dvw]">
                 <img src="{{ asset('storage/new_mission.png') }}" alt="NEW MISSION" class="object-cover">
             </div>
         @endif
