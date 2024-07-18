@@ -37,16 +37,16 @@ messaging.onBackgroundMessage((payload) => {
     self.registration.showNotification(notificationTitle, notificationOptions);
 });
 
-messaging.onMessage((payload) => {
-    console.log('[sw.js] Received foreground message ', payload);
-    const notificationTitle = payload.notification.title;
-    const notificationOptions = {
-        body: payload.notification.body,
-        icon: 'storage/icon.png'
-    };
-
-    self.registration.showNotification(notificationTitle, notificationOptions);
-});
+// messaging.onMessage((payload) => {
+//     console.log('[sw.js] Received foreground message ', payload);
+//     const notificationTitle = payload.notification.title;
+//     const notificationOptions = {
+//         body: payload.notification.body,
+//         icon: 'storage/icon.png'
+//     };
+//
+//     self.registration.showNotification(notificationTitle, notificationOptions);
+// });
 
 self.addEventListener('install', event => {
     event.waitUntil(
