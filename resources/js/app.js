@@ -68,7 +68,7 @@ axios.post('/get/vapid_key').then(async (res) => {
     })
         .then((currentToken) => {
             if (currentToken) {
-                // console.log('currentToken', currentToken);
+                console.log({currentToken: currentToken});
                 const sendData = {
                     token: currentToken,
                 }

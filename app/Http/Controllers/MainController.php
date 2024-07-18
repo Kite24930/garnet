@@ -54,11 +54,16 @@ class MainController extends Controller
                     'user_id' => $user->id,
                     'token' => $request->token,
                 ]);
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Notification token registered successfully',
+                ]);
+            } else {
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Notification token already registered',
+                ]);
             }
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Notification token registered successfully',
-            ]);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
