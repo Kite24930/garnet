@@ -19,6 +19,11 @@ if ('serviceWorker' in navigator) {
         }, error => {
             console.log('ServiceWorker registration failed: ', error);
         });
+        // navigator.serviceWorker.register('/firebase-messaging-sw.js', { type: 'module' }).then(registration => {
+        //     console.log('firebase ServiceWorker registration successful with scope: ', registration.scope);
+        // }, error => {
+        //     console.log('firebase ServiceWorker registration failed: ', error);
+        // });
     });
 }
 
@@ -56,7 +61,7 @@ const requestPermission = () => {
 
 axios.post('/get/vapid_key').then(async (res) => {
     const messaging = getMessaging();
-    console.log(res.data);
+    // console.log(res.data);
     getToken(messaging, {
         vapidKey: res.data.vapid_key,
         serviceWorkerRegistration: await navigator.serviceWorker.register('/firebase-messaging-sw.js', { type: 'module' }),
