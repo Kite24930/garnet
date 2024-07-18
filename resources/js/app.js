@@ -56,6 +56,7 @@ const requestPermission = () => {
 
 axios.post('/get/vapid_key').then(res => {
     const messaging = getMessaging();
+    console.log(res.data);
     getToken(messaging, { vapidKey: res.data.vapid_key })
         .then((currentToken) => {
             if (currentToken) {
