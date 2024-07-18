@@ -64,7 +64,7 @@ axios.post('/get/vapid_key').then(async (res) => {
     // console.log(res.data);
     getToken(messaging, {
         vapidKey: res.data.vapid_key,
-        serviceWorkerRegistration: await navigator.serviceWorker.register('/firebase-messaging-sw.js', { type: 'module' }),
+        serviceWorkerRegistration: await navigator.serviceWorker.register('/sw.js', { type: 'module' }),
     })
         .then((currentToken) => {
             if (currentToken) {
