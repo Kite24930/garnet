@@ -54,10 +54,13 @@ const requestPermission = () => {
         });
 }
 
-axios.post('/get/vapid_key').then(res => {
+axios.post('/get/vapid_key').then(async (res) => {
     const messaging = getMessaging();
     console.log(res.data);
-    getToken(messaging, { vapidKey: res.data.vapid_key })
+    getToken(messaging, {
+        vapidKey: res.data.vapid_key,
+        serviceWorkerRegistration: await navigator.serviceWorker.register('/firebase-messaging-sw.js', { type: 'module' }),
+    })
         .then((currentToken) => {
             if (currentToken) {
                 // console.log('currentToken', currentToken);
