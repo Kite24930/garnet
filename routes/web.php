@@ -56,6 +56,13 @@ Route::middleware('auth')->group(function () {
         Route::get('/settings/task/{task}', [SettingController::class, 'taskEdit'])->name('setting.task.edit');
         Route::patch('/settings/task/{task}', [SettingController::class, 'taskUpdate'])->name('setting.task.update');
         Route::delete('/settings/task/{task}', [SettingController::class, 'taskDestroy'])->name('setting.task.destroy');
+
+        Route::get('/settings/users', [SettingController::class, 'users'])->name('setting.users');
+        Route::post('/settings/user/assign/captain', [SettingController::class, 'assignCaptain'])->name('setting.user.assign.captain');
+        Route::delete('/settings/user/unassign/captain/{user_id}', [SettingController::class, 'unassignCaptain'])->name('setting.user.unassign.captain');
+    });
+
+    Route::group(['middleware' => ['role:admin|captain']], function () {
         Route::get('/settings/mission', [SettingController::class, 'mission'])->name('setting.mission');
         Route::get('/settings/mission/new', [SettingController::class, 'missionNew'])->name('setting.mission.new');
         Route::post('/settings/mission/new', [SettingController::class, 'missionStore'])->name('setting.mission.store');

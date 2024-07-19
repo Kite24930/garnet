@@ -81,6 +81,7 @@ export default defineConfig({
                 messageView: 'resources/js/mypage/message-view.js',
                 settings: 'resources/js/settings.js',
                 settingsStyle: 'resources/css/settings.css',
+                users: 'resources/js/settings/users.js',
                 rank: 'resources/js/settings/rank.js',
                 category: 'resources/js/settings/category.js',
                 group: 'resources/js/settings/group.js',

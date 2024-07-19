@@ -11,6 +11,7 @@ use App\Models\Rank;
 use App\Models\Task;
 use App\Models\TaskView;
 use App\Models\User;
+use App\Models\UserRoleView;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -205,7 +206,7 @@ class SettingController extends Controller
     }
 
     public function mission() {
-        $missions = MissionView::orderBy('start_date', 'desc')->get();
+        $missions = MissionView::where('sent_from', auth()->id())->orderBy('start_date', 'desc')->get();
         $data = [
             'missions' => $missions,
         ];
@@ -272,6 +273,38 @@ class SettingController extends Controller
             return redirect()->route('setting.mission')->with('success', 'Mission deleted successfully');
         } catch (\Exception $e) {
             return redirect()->route('setting.mission')->with('error', 'Mission deleted failed')->with('message', $e->getMessage());
+        }
+    }
+
+    public function users() {
+        $users = User::all();
+        $admins = UserRoleView::where('role_name', 'admin')->pluck('id')->toArray();
+        $captains = UserRoleView::where('role_name', 'captain')->pluck('id')->toArray();
+        $data = [
+            'users' => $users,
+            'admins' => $admins,
+            'captains' => $captains,
+        ];
+        return view('settings.users', $data);
+    }
+
+    public function assignCaptain (Request $request) {
+        try {
+            $user = User::find($request->user_id);
+            $user->assignRole('captain');
+            return response()->json(['status' => 'success', 'success' => 'Captain assigned successfully', 'request' => $request->all()]);
+        } catch (\Exception $e) {
+            return response()->json(['status' => 'error', 'error' => 'Captain assigned failed', 'message' => $e->getMessage(), 'request' => $request->all()]);
+        }
+    }
+
+    public function unassignCaptain ($user_id) {
+        try {
+            $user = User::find($user_id);
+            $user->removeRole('captain');
+            return response()->json(['status' => 'success', 'success' => 'Captain unassigned successfully']);
+        } catch (\Exception $e) {
+            return response()->json(['status' => 'error', 'error' => 'Captain unassigned failed', 'message' => $e->getMessage()]);
         }
     }
 }

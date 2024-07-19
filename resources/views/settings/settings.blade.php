@@ -7,6 +7,9 @@
             </div>
         </div>
         <div class="flex flex-col items-center justify-center text-4xl gap-4 w-full">
+            <x-parts.menu-item link="{{ route('setting.users') }}">
+                Users
+            </x-parts.menu-item>
             <x-parts.menu-item link="{{ route('setting.mission') }}">
                 Mission
             </x-parts.menu-item>
