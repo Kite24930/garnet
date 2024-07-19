@@ -51,8 +51,8 @@ class MainController extends Controller
     }
 
     public function messages () {
-        $unread_messages = MessageView::where('user_id', auth()->id())->where('is_read', 0)->get();
-        $read_messages = MessageView::where('user_id', auth()->id())->where('is_read', 1)->get();
+        $unread_messages = MessageView::where('user_id', auth()->id())->where('is_read', 0)->orderBy('created_at', 'desc')->get();
+        $read_messages = MessageView::where('user_id', auth()->id())->where('is_read', 1)->orderBy('created_at', 'desc')->get();
         $data = [
             'user' => auth()->user(),
             'unread_messages' => $unread_messages,
