@@ -52,6 +52,9 @@
             <x-parts.menu-item link="{{ route('logs.show') }}">
                 Logs
             </x-parts.menu-item>
+            <x-parts.menu-item link="{{ route('score') }}">
+                Score
+            </x-parts.menu-item>
             @can('access to user')
                 <x-parts.menu-item link="{{ route('profile.edit') }}">
                     Profile

@@ -4,6 +4,7 @@ use App\Http\Controllers\EntryController;
 use App\Http\Controllers\LogsController;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ScoreController;
 use App\Http\Controllers\SettingController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -21,6 +22,14 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/logs/{year?}/{month?}/{user?}', [LogsController::class, 'show'])->name('logs.show');
     Route::get('/view/logs/{log}/{user}', [LogsController::class, 'view'])->name('logs.view');
+
+    Route::get('/score/summary/{user?}', [ScoreController::class, 'score'])->name('score');
+    Route::get('/score/new', [ScoreController::class, 'scoreNew'])->name('score.new');
+    Route::post('/score', [ScoreController::class, 'scoreStore'])->name('score.store');
+    Route::get('/score/edit/{score}', [ScoreController::class, 'scoreEdit'])->name('score.edit');
+    Route::patch('/score/edit/{score}', [ScoreController::class, 'scoreUpdate'])->name('score.update');
+    Route::delete('/score/{score}', [ScoreController::class, 'scoreDestroy'])->name('score.destroy');
+    Route::get('/score/view/{score}', [ScoreController::class, 'scoreView'])->name('score.view');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
