@@ -68,7 +68,7 @@
                                     <x-parts.score-item item_name="{{ __('防御率') }}" :item_value="__('-')" />
                                 @endif
                                 <x-parts.score-item item_name="{{ __('投球数') }}" :item_value="$all_data['pitch_count'].'球'" />
-                                @if($all_data['inning'] !== 0 || $all_data['fine_inning'] !== 0)
+                                @if(($all_data['inning'] + ($all_data['fine_inning'] / 3)) !== 0)
                                     <x-parts.score-item item_name="{{ __('回あたり投球数') }}" :item_value="number_format($all_data['pitch_count'] / ($all_data['inning'] + ($all_data['fine_inning'] / 3)), 1).'球'" />
                                 @else
                                     <x-parts.score-item item_name="{{ __('回あたり投球数') }}" :item_value="__('-')" />
@@ -86,13 +86,13 @@
                                 @endif
                                 <x-parts.score-item item_name="{{ __('被安打数') }}" :item_value="($all_data['single_hits_allowed'] + $all_data['double_hits_allowed'] + $all_data['triple_hits_allowed'] + $all_data['homerun_allowed']).'個'" />
                                 <x-parts.score-item item_name="{{ __('与四球数') }}" :item_value="$all_data['base_on_balls'].'個'" />
-                                @if($all_data['inning'] !== 0 || $all_data['fine_inning'] !== 0)
+                                @if(($all_data['inning'] + ($all_data['fine_inning'] / 3)) !== 0)
                                     <x-parts.score-item item_name="{{ __('与四球率') }}" :item_value="number_format(($all_data['base_on_balls'] * 9) / ($all_data['inning'] + ($all_data['fine_inning'] / 3)), 3)" />
                                 @else
                                     <x-parts.score-item item_name="{{ __('与四球率') }}" :item_value="__('-')" />
                                 @endif
                                 <x-parts.score-item item_name="{{ __('与死球数') }}" :item_value="$all_data['hit_by_pitch'].'個'" />
-                                @if($all_data['inning'] !== 0 || $all_data['fine_inning'] !== 0)
+                                @if(($all_data['inning'] + ($all_data['fine_inning'] / 3)) !== 0)
                                     <x-parts.score-item item_name="{{ __('与死球率') }}" :item_value="number_format(($all_data['hit_by_pitch'] * 9) / ($all_data['inning'] + ($all_data['fine_inning'] / 3)), 3)" />
                                     <x-parts.score-item item_name="{{ __('与四死球率') }}" :item_value="number_format((($all_data['base_on_balls'] + $all_data['hit_by_pitch']) * 9) / ($all_data['inning'] + ($all_data['fine_inning'] / 3)), 3)" />
                                     <x-parts.score-item item_name="{{ __('WHIP') }}" :item_value="number_format(($all_data['single_hits_allowed'] + $all_data['double_hits_allowed'] + $all_data['triple_hits_allowed'] + $all_data['homerun_allowed'] + $all_data['base_on_balls']) / ($all_data['inning'] + ($all_data['fine_inning'] / 3)), 3)" />
@@ -101,7 +101,7 @@
                                     <x-parts.score-item item_name="{{ __('与四死球率') }}" :item_value="__('-')" />
                                     <x-parts.score-item item_name="{{ __('WHIP') }}" :item_value="__('-')" />
                                 @endif
-                                @if($all_data['ground_out'] !== 0 || $all_data['fly_out'] !== 0 || $all_data['line_out'] !== 0)
+                                @if(($all_data['ground_out'] + $all_data['fly_out'] + $all_data['line_out']) !== 0)
                                     <x-parts.score-item item_name="{{ __('ゴロアウト率') }}" :item_value="number_format($all_data['ground_out'] / ($all_data['ground_out'] + $all_data['fly_out'] + $all_data['line_out']), 3)" />
                                     <x-parts.score-item item_name="{{ __('フライアウト率') }}" :item_value="number_format($all_data['fly_out'] / ($all_data['ground_out'] + $all_data['fly_out'] + $all_data['line_out']), 3)" />
                                     <x-parts.score-item item_name="{{ __('ライナーアウト率') }}" :item_value="number_format($all_data['line_out'] / ($all_data['ground_out'] + $all_data['fly_out'] + $all_data['line_out']), 3)" />
