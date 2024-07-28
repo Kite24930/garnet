@@ -30,9 +30,16 @@
             <x-parts.menu-item link="{{ route('profile.edit') }}">
                 Profile
             </x-parts.menu-item>
-            <x-parts.menu-item link="{{ route('setting.mission') }}">
-                Mission
-            </x-parts.menu-item>
+            @can('captain')
+                <x-parts.menu-item link="{{ route('setting.mission') }}">
+                    Mission
+                </x-parts.menu-item>
+            @endcan
+            @can('admin')
+                <x-parts.menu-item link="{{ route('setting.mission') }}">
+                    Mission
+                </x-parts.menu-item>
+            @endcan
             <x-parts.menu-item link="{{ route('message.list') }}">
                 Send Message
             </x-parts.menu-item>
