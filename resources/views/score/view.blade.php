@@ -45,37 +45,37 @@
                             <x-parts.score-item item_name="{{ __('投球回数') }}" :item_value="($score['inning'] + intdiv($score['fine_inning'], 3)).' '.($score['fine_inning'] % 3).'/3 回'" />
                         @endif
                         <x-parts.score-item item_name="{{ __('対戦打者数') }}" :item_value="$score['batter_count'].'人'" />
-                        @if(($score['inning'] + ($score['fine_inning'] / 3)) !== 0)
+                        @if(($score['inning'] !== null || $score['fine_inning'] !== null) && ($score['inning'] + ($score['fine_inning'] / 3)) !== 0)
                             <x-parts.score-item item_name="{{ __('防御率') }}" :item_value="number_format(($score['earned_run'] * 9) / ($score['inning'] + ($score['fine_inning'] / 3)), 3)" />
                         @else
                             <x-parts.score-item item_name="{{ __('防御率') }}" :item_value="__('-')" />
                         @endif
                         <x-parts.score-item item_name="{{ __('投球数') }}" :item_value="$score['pitch_count'].'球'" />
-                        @if(($score['inning'] + ($score['fine_inning'] / 3)) !== 0)
+                        @if(($score['inning'] !== null || $score['fine_inning'] !== null) && ($score['inning'] + ($score['fine_inning'] / 3)) !== 0)
                             <x-parts.score-item item_name="{{ __('回あたり投球数') }}" :item_value="number_format($score['pitch_count'] / ($score['inning'] + ($score['fine_inning'] / 3)), 1).'球'" />
                         @else
                             <x-parts.score-item item_name="{{ __('回あたり投球数') }}" :item_value="__('-')" />
                         @endif
-                        @if($score['pitch_count'] !== 0)
+                        @if($score['pitch_count'] !== null && $score['pitch_count'] !== 0)
                             <x-parts.score-item item_name="{{ __('ストライク率') }}" :item_value="number_format($score['strike'] / $score['pitch_count'], 3)" />
                         @else
                             <x-parts.score-item item_name="{{ __('ストライク率') }}" :item_value="__('-')" />
                         @endif
                         <x-parts.score-item item_name="{{ __('奪三振数') }}" :item_value="$score['strikeout'].'個'" />
-                        @if($score['batter_count'] !== 0)
+                        @if($score['batter_count'] !== null && $score['batter_count'] !== 0)
                             <x-parts.score-item item_name="{{ __('奪三振率') }}" :item_value="number_format(($score['strikeout']) / ($score['batter_count']), 3)" />
                         @else
                             <x-parts.score-item item_name="{{ __('奪三振率') }}" :item_value="__('-')" />
                         @endif
                         <x-parts.score-item item_name="{{ __('被安打数') }}" :item_value="($score['single_hits_allowed'] + $score['double_hits_allowed'] + $score['triple_hits_allowed'] + $score['homerun_allowed']).'個'" />
                         <x-parts.score-item item_name="{{ __('与四球数') }}" :item_value="$score['base_on_balls'].'個'" />
-                        @if(($score['inning'] + ($score['fine_inning'] / 3)) !== 0)
+                        @if(($score['inning'] !== null || $score['fine_inning'] !== null) && ($score['inning'] + ($score['fine_inning'] / 3)) !== 0)
                             <x-parts.score-item item_name="{{ __('与四球率') }}" :item_value="number_format(($score['base_on_balls'] * 9) / ($score['inning'] + ($score['fine_inning'] / 3)), 3)" />
                         @else
                             <x-parts.score-item item_name="{{ __('与四球率') }}" :item_value="__('-')" />
                         @endif
                         <x-parts.score-item item_name="{{ __('与死球数') }}" :item_value="$score['hit_by_pitch'].'個'" />
-                        @if($score['inning'] !== 0 || $score['fine_inning'] !== 0)
+                        @if(($score['inning'] !== null || $score['fine_inning'] !== null) && ($score['inning'] + ($score['fine_inning'] / 3)) !== 0)
                             <x-parts.score-item item_name="{{ __('与死球率') }}" :item_value="number_format(($score['hit_by_pitch'] * 9) / ($score['inning'] + ($score['fine_inning'] / 3)), 3)" />
                             <x-parts.score-item item_name="{{ __('与四死球率') }}" :item_value="number_format((($score['base_on_balls'] + $score['hit_by_pitch']) * 9) / ($score['inning'] + ($score['fine_inning'] / 3)), 3)" />
                             <x-parts.score-item item_name="{{ __('WHIP') }}" :item_value="number_format(($score['single_hits_allowed'] + $score['double_hits_allowed'] + $score['triple_hits_allowed'] + $score['homerun_allowed'] + $score['base_on_balls']) / ($score['inning'] + ($score['fine_inning'] / 3)), 3)" />
@@ -84,7 +84,7 @@
                             <x-parts.score-item item_name="{{ __('与四死球率') }}" :item_value="__('-')" />
                             <x-parts.score-item item_name="{{ __('WHIP') }}" :item_value="__('-')" />
                         @endif
-                        @if(($score['ground_out'] + $score['fly_out'] + $score['line_out']) !== 0)
+                        @if(($score['ground_out'] !== null || $score['fly_out'] !== null || $score['line_out'] !== null) && ($score['ground_out'] + $score['fly_out'] + $score['line_out']) !== 0)
                             <x-parts.score-item item_name="{{ __('ゴロアウト率') }}" :item_value="number_format($score['ground_out'] / ($score['ground_out'] + $score['fly_out'] + $score['line_out']), 3)" />
                             <x-parts.score-item item_name="{{ __('フライアウト率') }}" :item_value="number_format($score['fly_out'] / ($score['ground_out'] + $score['fly_out'] + $score['line_out']), 3)" />
                             <x-parts.score-item item_name="{{ __('ライナーアウト率') }}" :item_value="number_format($score['line_out'] / ($score['ground_out'] + $score['fly_out'] + $score['line_out']), 3)" />
@@ -109,7 +109,7 @@
                         <x-parts.score-item item_name="{{ __('打席数') }}" :item_value="$score['hitting'].'打席'" />
                         <x-parts.score-item item_name="{{ __('打数') }}" :item_value="($score['hitting'] - ($score['four_balls'] + $score['dead_balls'] + $score['sacrifice_bunt'] + $score['sacrifice_fly'])).'打数'" />
                         <x-parts.score-item item_name="{{ __('安打数') }}" :item_value="($score['single_hits'] + $score['double_hits'] + $score['triple_hits'] + $score['homerun']).'安打'" />
-                        @if(($score['hitting'] - ($score['four_balls'] + $score['dead_balls'] + $score['sacrifice_bunt'] + $score['sacrifice_fly'])) !== 0)
+                        @if(($score['hitting'] !== null || $score['four_balls'] !== null || $score['dead_balls'] !== null || $score['sacrifice_bunt'] !== null || $score['sacrifice_fly'] !== null) && ($score['hitting'] - ($score['four_balls'] + $score['dead_balls'] + $score['sacrifice_bunt'] + $score['sacrifice_fly'])) !== 0)
                             <x-parts.score-item item_name="{{ __('打率') }}" :item_value="number_format(($score['single_hits'] + $score['double_hits'] + $score['triple_hits'] + $score['homerun']) / ($score['hitting'] - ($score['four_balls'] + $score['dead_balls'] + $score['sacrifice_bunt'] + $score['sacrifice_fly'])), 3)" />
                         @else
                             <x-parts.score-item item_name="{{ __('打率') }}" :item_value="__('-')" />
@@ -126,24 +126,24 @@
                         <x-parts.score-item item_name="{{ __('犠飛数') }}" :item_value="$score['sacrifice_fly'].'個'" />
                         <x-parts.score-item item_name="{{ __('盗塁数') }}" :item_value="$score['stolen_bases'].'個'" />
                         <x-parts.score-item item_name="{{ __('盗塁死数') }}" :item_value="$score['caught_stealing'].'個'" />
-                        @if(($score['stolen_bases'] + $score['caught_stealing']) !== 0)
+                        @if(($score['stolen_bases'] !== null || $score['caught_stealing'] !== null) && ($score['stolen_bases'] + $score['caught_stealing']) !== 0)
                             <x-parts.score-item item_name="{{ __('盗塁成功率') }}" :item_value="number_format($score['stolen_bases'] / ($score['stolen_bases'] + $score['caught_stealing']), 3)" />
                         @endif
-                        @if(($score['hitting'] - ($score['four_balls'] + $score['dead_balls'] + $score['sacrifice_bunt'] + $score['sacrifice_fly'])) !== 0)
+                        @if(($score['hitting'] !== null || $score['four_balls'] !== null || $score['dead_balls'] !== null || $score['sacrifice_bunt'] !== null || $score['sacrifice_fly'] !== null) && ($score['hitting'] - ($score['four_balls'] + $score['dead_balls'] + $score['sacrifice_bunt'] + $score['sacrifice_fly'])) !== 0)
                             <x-parts.score-item item_name="{{ __('長打率') }}" :item_value="number_format(($score['single_hits'] + 2 * $score['double_hits'] + 3 * $score['triple_hits'] + 4 * $score['homerun']) / ($score['hitting'] - ($score['four_balls'] + $score['dead_balls'] + $score['sacrifice_bunt'] + $score['sacrifice_fly'])), 3)" />
                         @endif
                         <x-parts.score-item item_name="{{ __('出塁数') }}" :item_value="$score['times_on_base'].'個'" />
-                        @if(($score['hitting'] - $score['sacrifice_bunt']) !== 0)
+                        @if(($score['hitting'] !== null || $score['sacrifice_bunt'] !== null) && ($score['hitting'] - $score['sacrifice_bunt']) !== 0)
                             <x-parts.score-item item_name="{{ __('出塁率') }}" :item_value="number_format(($score['single_hits'] + $score['double_hits'] + $score['triple_hits'] + $score['homerun'] + $score['four_balls'] + $score['dead_balls']) / ($score['hitting'] - $score['sacrifice_bunt']), 3)" />
                         @else
                             <x-parts.score-item item_name="{{ __('出塁率') }}" :item_value="__('-')" />
                         @endif
-                        @if(($score['hitting'] - ($score['four_balls'] + $score['dead_balls'] + $score['sacrifice_bunt'] + $score['sacrifice_fly'])) !== 0 && ($score['hitting'] - $score['sacrifice_bunt']) !== 0)
+                        @if(($score['hitting'] !== null || $score['four_balls'] !== null || $score['dead_balls'] !== null || $score['sacrifice_bunt'] !== null || $score['sacrifice_fly'] !== null) && ($score['hitting'] - ($score['four_balls'] + $score['dead_balls'] + $score['sacrifice_bunt'] + $score['sacrifice_fly'])) !== 0 && ($score['hitting'] - $score['sacrifice_bunt']) !== 0)
                             <x-parts.score-item item_name="{{ __('OPS') }}" :item_value="number_format(($score['single_hits'] + 2 * $score['double_hits'] + 3 * $score['triple_hits'] + 4 * $score['homerun']) / ($score['hitting'] - ($score['four_balls'] + $score['dead_balls'] + $score['sacrifice_bunt'] + $score['sacrifice_fly'])) + ($score['single_hits'] + $score['double_hits'] + $score['triple_hits'] + $score['homerun'] + $score['four_balls'] + $score['dead_balls']) / ($score['hitting'] - $score['sacrifice_bunt']), 3)" />
                         @else
                             <x-parts.score-item item_name="{{ __('OPS') }}" :item_value="__('-')" />
                         @endif
-                        @if(($score['hitting'] - ($score['four_balls'] + $score['dead_balls'] + $score['sacrifice_bunt'] + $score['sacrifice_fly'])) !== 0 && ($score['hitting'] - ($score['four_balls'] + $score['dead_balls'] + $score['sacrifice_bunt'] + $score['sacrifice_fly'])) !== 0)
+                        @if(($score['hitting'] !== null || $score['four_balls'] !== null || $score['dead_balls'] !== null || $score['sacrifice_bunt'] !== null || $score['sacrifice_fly'] !== null) && ($score['hitting'] - ($score['four_balls'] + $score['dead_balls'] + $score['sacrifice_bunt'] + $score['sacrifice_fly'])) !== 0 && ($score['hitting'] - ($score['four_balls'] + $score['dead_balls'] + $score['sacrifice_bunt'] + $score['sacrifice_fly'])) !== 0)
                             <x-parts.score-item item_name="{{ __('ISO') }}" :item_value="number_format(($score['single_hits'] + 2 * $score['double_hits'] + 3 * $score['triple_hits'] + 4 * $score['homerun']) / ($score['hitting'] - ($score['four_balls'] + $score['dead_balls'] + $score['sacrifice_bunt'] + $score['sacrifice_fly'])) - ($score['single_hits'] + $score['double_hits'] + $score['triple_hits'] + $score['homerun']) / ($score['hitting'] - ($score['four_balls'] + $score['dead_balls'] + $score['sacrifice_bunt'] + $score['sacrifice_fly'])), 3)" />
                         @else
                             <x-parts.score-item item_name="{{ __('ISO') }}" :item_value="__('-')" />
