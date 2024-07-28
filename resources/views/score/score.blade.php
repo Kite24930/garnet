@@ -62,7 +62,7 @@
                                     <x-parts.score-item item_name="{{ __('投球回数') }}" :item_value="($all_data['inning'] + intdiv($all_data['fine_inning'], 3)).' '.($all_data['fine_inning'] % 3).'/3 回'" />
                                 @endif
                                 <x-parts.score-item item_name="{{ __('対戦打者数') }}" :item_value="$all_data['batter_count'].'人'" />
-                                @if($all_data['inning'] !== 0 || $all_data['fine_inning'] !== 0)
+                                @if(($all_data['inning'] + ($all_data['fine_inning'] / 3)) !== 0)
                                     <x-parts.score-item item_name="{{ __('防御率') }}" :item_value="number_format(($all_data['earned_run'] * 9) / ($all_data['inning'] + ($all_data['fine_inning'] / 3)), 3)" />
                                 @else
                                     <x-parts.score-item item_name="{{ __('防御率') }}" :item_value="__('-')" />
