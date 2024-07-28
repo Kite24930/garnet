@@ -78,12 +78,12 @@
                                 @else
                                     <x-parts.score-item item_name="{{ __('ストライク率') }}" :item_value="__('-')" />
                                 @endif
-                                @if($all_data['inning'] !== 0 || $all_data['fine_inning'] !== 0)
-                                    <x-parts.score-item item_name="{{ __('奪三振数') }}" :item_value="number_format(($all_data['strikeout'] * 9) / ($all_data['inning'] + ($all_data['fine_inning'] / 3)), 3)" />
+                                <x-parts.score-item item_name="{{ __('奪三振数') }}" :item_value="$all_data['strikeout'].'個'" />
+                                @if($all_data['batter_count'] !== 0)
+                                    <x-parts.score-item item_name="{{ __('奪三振率') }}" :item_value="number_format(($all_data['strikeout']) / ($all_data['batter_count']), 3)" />
                                 @else
-                                    <x-parts.score-item item_name="{{ __('奪三振数') }}" :item_value="__('-')" />
+                                    <x-parts.score-item item_name="{{ __('奪三振率') }}" :item_value="__('-')" />
                                 @endif
-                                <x-parts.score-item item_name="{{ __('奪三振率') }}" :item_value="$all_data['strikeout'].'個'" />
                                 <x-parts.score-item item_name="{{ __('被安打数') }}" :item_value="($all_data['single_hits_allowed'] + $all_data['double_hits_allowed'] + $all_data['triple_hits_allowed'] + $all_data['homerun_allowed']).'個'" />
                                 <x-parts.score-item item_name="{{ __('与四球数') }}" :item_value="$all_data['base_on_balls'].'個'" />
                                 @if($all_data['inning'] !== 0 || $all_data['fine_inning'] !== 0)

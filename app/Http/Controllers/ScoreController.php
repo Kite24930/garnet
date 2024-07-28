@@ -16,7 +16,7 @@ class ScoreController extends Controller
         if (!$user) {
             $user = auth()->id();
         }
-        $all_scores = ScoreView::where('user_id', $user)->orderBy('date')->get();
+        $all_scores = ScoreView::where('user_id', $user)->orderBy('date', 'desc')->get();
         $game_count = $all_scores->count();
         $all_data = [];
         foreach ($all_scores as $score) {
