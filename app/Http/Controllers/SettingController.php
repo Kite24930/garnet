@@ -209,7 +209,7 @@ class SettingController extends Controller
     }
 
     public function mission() {
-        $missions = MissionView::where('sent_from', auth()->id())->orderBy('start_date', 'desc')->get();
+        $missions = MissionView::where('sent_from', auth()->id())->where('due_date', '>=', date('Y-m-d'))->orderBy('start_date', 'desc')->get();
         $data = [
             'missions' => $missions,
         ];
