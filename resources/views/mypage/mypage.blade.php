@@ -30,12 +30,12 @@
             <x-parts.menu-item link="{{ route('profile.edit') }}">
                 Profile
             </x-parts.menu-item>
-            @can('captain')
+            @can('access to captain')
                 <x-parts.menu-item link="{{ route('setting.mission') }}">
                     Mission
                 </x-parts.menu-item>
             @endcan
-            @can('admin')
+            @can('access to admin')
                 <x-parts.menu-item link="{{ route('setting.mission') }}">
                     Mission
                 </x-parts.menu-item>
