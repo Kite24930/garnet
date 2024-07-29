@@ -6,6 +6,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.3",
+        "google/apiclient": "^2.17",
         "jenssegers/agent": "^2.6",
         "laravel/breeze": "^2.1",
         "laravel/framework": "^11.9",

@@ -7,6 +7,7 @@ use App\Models\Group;
 use App\Models\Item;
 use App\Models\Mission;
 use App\Models\MissionView;
+use App\Models\Notification;
 use App\Models\Rank;
 use App\Models\Task;
 use App\Models\TaskView;
@@ -14,7 +15,9 @@ use App\Models\User;
 use App\Models\UserRoleView;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Controllers\MainController;
 
 class SettingController extends Controller
 {
@@ -234,6 +237,53 @@ class SettingController extends Controller
                     'due_date' => $request->due_date,
                     'sent_from' => auth()->id(),
                 ]);
+                if ($user_id !== 0) {
+                    $title = '個別ミッションが発令されました';
+                    $body = $request->message;
+                    $notification = Notification::where('user_id', $user_id)->get();
+                    foreach ($notification as $n) {
+                        $token = $n->token;
+
+                        $message = [
+                            'message' => [
+                                'token' => $token,
+                                'notification' => [
+                                    'title' => $title,
+                                    'body' => $body,
+                                ],
+                            ]
+                        ];
+
+                        $response = Http::withToken(MainController::getAccessToken())
+                            ->post('https://fcm.googleapis.com/v1/projects/garnet-b7ded/messages:send', $message);
+//
+//                        if ($response->successful()) {
+//                            return response()->json(['message' => 'Notification sent successfully'], 200);
+//                        } else {
+//                            return response()->json(['message' => 'Failed to send notification', 'error' => $response->body()], $response->status());
+//                        }
+                    }
+                } else {
+                    $title = 'チームミッションが発令されました';
+                    $body = $request->message;
+                    $notification = Notification::all();
+                    foreach ($notification as $n) {
+                        $token = $n->token;
+
+                        $message = [
+                            'message' => [
+                                'token' => $token,
+                                'notification' => [
+                                    'title' => $title,
+                                    'body' => $body,
+                                ],
+                            ]
+                        ];
+
+                        $response = Http::withToken(MainController::getAccessToken())
+                            ->post('https://fcm.googleapis.com/v1/projects/garnet-b7ded/messages:send', $message);
+                    }
+                }
             }
             DB::commit();
             return redirect()->route('setting.mission')->with('success', 'Mission added successfully');

@@ -1,3 +1,5 @@
+import axios from "axios";
+
 window.addEventListener('load', () => {
     document.body.classList.add('fade-in');
     const logoArea = document.getElementById('logo-area');
@@ -64,4 +66,14 @@ document.querySelectorAll('.btn-item').forEach((el) => {
             a.click();
         }, 1200)
     })
+});
+
+document.getElementById('notification_test').addEventListener('click', () => {
+    axios.get('/send/notification')
+        .then(res => {
+            console.log(res.data);
+        })
+        .catch(err => {
+            console.log(err);
+        });
 });

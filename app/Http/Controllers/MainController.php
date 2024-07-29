@@ -10,6 +10,7 @@ use App\Models\Notification;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 
 class MainController extends Controller
 {
@@ -100,6 +101,24 @@ class MainController extends Controller
                     'message' => $request->message,
                     'sent_from' => auth()->id(),
                 ]);
+                $sent_from = User::find(auth()->id());
+                $notification = Notification::where('user_id', $user_id)->get();
+                foreach ($notification as $n) {
+                    $token = $n->token;
+
+                    $message = [
+                        'message' => [
+                            'token' => $token,
+                            'notification' => [
+                                'title' => $sent_from->name.'からメッセージが届きました',
+                                'body' => $request->title,
+                            ],
+                        ]
+                    ];
+
+                    $response = Http::withToken($this->getAccessToken())
+                        ->post('https://fcm.googleapis.com/v1/projects/garnet-b7ded/messages:send', $message);
+                }
             }
             DB::commit();
             return response()->json([
@@ -187,5 +206,17 @@ class MainController extends Controller
                 'error' => $e->getMessage(),
             ]);
         }
+    }
+
+    public static function getAccessToken() {
+        $client = new \Google_Client();
+        $client->setAuthConfig(storage_path('app/google-service-account.json'));
+        $client->addScope('https://www.googleapis.com/auth/firebase.messaging');
+
+        if ($client->isAccessTokenExpired()) {
+            $client->fetchAccessTokenWithAssertion();
+        }
+
+        return $client->getAccessToken()['access_token'];
     }
 }
