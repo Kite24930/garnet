@@ -237,7 +237,7 @@ class SettingController extends Controller
                     'due_date' => $request->due_date,
                     'sent_from' => auth()->id(),
                 ]);
-                if ($user_id !== 0) {
+                if ((int)$user_id !== 0) {
                     $title = '個別ミッションが発令されました';
                     $body = $request->message;
                     $notification = Notification::where('user_id', $user_id)->get();
