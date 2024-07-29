@@ -61,8 +61,8 @@
                                 @else
                                     <x-parts.score-item item_name="{{ __('投球回数') }}" :item_value="($all_data['inning'] + intdiv($all_data['fine_inning'], 3)).' '.($all_data['fine_inning'] % 3).'/3 回'" />
                                 @endif
-                                <x-parts.score-item item_name="{{ __('失点') }}" :item_value="$all_data['point'].'回'" />
-                                <x-parts.score-item item_name="{{ __('自責点') }}" :item_value="$all_data['earned_run'].'回'" />
+                                <x-parts.score-item item_name="{{ __('失点') }}" :item_value="$all_data['point'].'点'" />
+                                <x-parts.score-item item_name="{{ __('自責点') }}" :item_value="$all_data['earned_run'].'点'" />
                                 <x-parts.score-item item_name="{{ __('対戦打者数') }}" :item_value="$all_data['batter_count'].'人'" />
                                 @if(($all_data['inning'] + ($all_data['fine_inning'] / 3)) !== 0)
                                     <x-parts.score-item item_name="{{ __('防御率') }}" :item_value="number_format(($all_data['earned_run'] * 9) / ($all_data['inning'] + ($all_data['fine_inning'] / 3)), 3)" />
