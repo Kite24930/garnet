@@ -241,8 +241,8 @@ class SettingController extends Controller
                     $title = '個別ミッションが発令されました';
                     $body = $request->message;
                     $notification = Notification::where('user_id', $user_id)->orderBy('updated_at', 'desc')->first();
-//                    foreach ($notification as $n) {
-                        $token = $notification->token;
+                    foreach ($notification as $n) {
+                        $token = $n->token;
 
                         $message = [
                             'message' => [
@@ -256,7 +256,7 @@ class SettingController extends Controller
 
                         $response = Http::withToken(MainController::getAccessToken())
                             ->post('https://fcm.googleapis.com/v1/projects/garnet-b7ded/messages:send', $message);
-//                    }
+                    }
                 } else {
                     $title = 'チームミッションが発令されました';
                     $body = $request->message;
