@@ -67,13 +67,3 @@ document.querySelectorAll('.btn-item').forEach((el) => {
         }, 1200)
     })
 });
-
-document.getElementById('notification_test').addEventListener('click', () => {
-    axios.get('/send/notification')
-        .then(res => {
-            console.log(res.data);
-        })
-        .catch(err => {
-            console.log(err);
-        });
-});
