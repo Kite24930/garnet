@@ -240,7 +240,7 @@ class SettingController extends Controller
                 if ($user_id !== 0) {
                     $title = '個別ミッションが発令されました';
                     $body = $request->message;
-                    $notification = Notification::where('user_id', $user_id)->orderBy('updated_at', 'desc')->first();
+                    $notification = Notification::where('user_id', $user_id)->get();
                     foreach ($notification as $n) {
                         $token = $n->token;
 
