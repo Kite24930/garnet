@@ -32,13 +32,13 @@
                 </div>
             </div>
             <div class="w-full flex justify-between items-center">
-                <a href="{{ route('logs.show', [$prev_month->format('Y'), $prev_month->format('m')]) }}" class="rounded-lg border border-gray-300 py-2 px-4 hover:bg-gray-100 hover:text-[#800000] duration-500">
+                <a href="{{ route('logs.show', [$prev_month->format('Y'), $prev_month->format('m'), $user->id]) }}" class="rounded-lg border border-gray-300 py-2 px-4 hover:bg-gray-100 hover:text-[#800000] duration-500">
                     {{ __('← '.$prev_month->format('n月')) }}
                 </a>
                 <div class="text-xl garnet">
                     {{ date('M', strtotime($year.'-'.$month)) }}
                 </div>
-                <a href="{{ route('logs.show', [$next_month->format('Y'), $next_month->format('m')]) }}" class="rounded-lg border border-gray-300 py-2 px-4 hover:bg-gray-100 hover:text-[#800000] duration-500">
+                <a href="{{ route('logs.show', [$next_month->format('Y'), $next_month->format('m'), $user->id]) }}" class="rounded-lg border border-gray-300 py-2 px-4 hover:bg-gray-100 hover:text-[#800000] duration-500">
                     {{ __($next_month->format('n月').' →') }}
                 </a>
             </div>
