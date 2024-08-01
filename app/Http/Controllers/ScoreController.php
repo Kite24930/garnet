@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Game;
+use App\Models\Rank;
+use App\Models\ResultView;
 use App\Models\Score;
 use App\Models\ScoreView;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -315,5 +318,407 @@ class ScoreController extends Controller
             'score' => $score,
         ];
         return view('score.view', $data);
+    }
+
+    public function totalRanking () {
+        $exclusions = ['score_id', 'user_id', 'user_name', 'user_icon', 'game_id', 'date', 'opponent', 'place', 'match_number', 'score_us', 'score_opponent', 'result', 'comment', 'game_score_book_1', 'game_score_book_2', 'pitcher_comment', 'batter_comment', 'defense_comment'];
+        $ranking_label = [
+            'era' => '防御率',
+            'k_9' => '奪三振率',
+            'whip' => 'WHIP',
+            'avg' => '打率',
+            'obp' => '出塁率',
+            'slg' => '長打率',
+            'ops' => 'OPS',
+            'rbi' => '打点',
+            'sb' => '盗塁数',
+            'iso' => 'ISO',
+            'fpct' => '守備率',
+            'rf' => 'レンジファクター',
+        ];
+        $descItem = ['k_9', 'avg', 'obp', 'slg', 'ops', 'rbi', 'sb', 'iso', 'fpct', 'rf'];
+        $integerItem = ['rbi', 'sb'];
+        /*
+         * era: 防御率(自責点*9/投球回)
+         * k_9: 奪三振率(奪三振数/対戦打者数)
+         * whip: WHIP(与四球数+被安打数/投球回)
+         * avg: 打率(安打数/打数)
+         * obp: 出塁率(四球数+死球数+安打数/打数+四球数+死球数+犠飛数)
+         * slg: 長打率((単打数+2*二塁打数+3*三塁打数+4*本塁打数)/打数)
+         * ops: OPS(出塁率+長打率)
+         * rbi: 打点(打点)
+         * sb: 盗塁(盗塁数)
+         * iso: ISO(長打率-打率)
+         * fpct: 守備率(刺殺数+補殺数/刺殺数+補殺数+失策数)
+         * rf: レンジファクター(刺殺数+補殺数/守備イニング)
+        */
+        // ソート関数
+        function sortByItem($array, $itemName, $descItem) {
+            // 空の要素やnullを削除
+            $filteredArray = array_filter($array, function($item) use ($itemName) {
+                return isset($item[$itemName]);
+            });
+
+            // ソート
+            usort($filteredArray, function($a, $b) use ($itemName, $descItem) {
+                if (in_array($itemName, $descItem)) {
+                    return $b[$itemName] <=> $a[$itemName];
+                }
+                return $a[$itemName] <=> $b[$itemName];
+            });
+
+            return $filteredArray;
+        }
+        function sortByRank($array, $itemName, $rankName) {
+            // 空の要素やnullを削除
+            $filteredArray = array_filter($array, function($item) use ($itemName, $rankName) {
+                return isset($item[$itemName][$rankName]);
+            });
+
+            // ソート
+            usort($filteredArray, function($a, $b) use ($itemName, $rankName) {
+                return $b[$itemName][$rankName] <=> $a[$itemName][$rankName];
+            });
+
+            return $filteredArray;
+        }
+        $users = User::all();
+        foreach ($users as $user) {
+            $scores = ScoreView::where('user_id', $user->id)->get();
+            $all_data = [];
+            foreach ($scores as $score) {
+                foreach($score->toArray() as $key => $item) {
+                    if (!in_array($key, $exclusions)) {
+                        if (!isset($all_data[$key])) {
+                            $all_data[$key] = 0;
+                        }
+                        if (is_numeric($item)) {
+                            $all_data[$key] += $item;
+                        } elseif (is_null($item)) {
+                            $all_data[$key] += 0;
+                        }
+                    }
+                }
+            }
+            if (count($all_data) !== 0) {
+                if (($all_data['inning'] + ($all_data['fine_inning'] / 3)) !== 0) {
+                    $all_data['era'] = $all_data['earned_run'] * 9 / ($all_data['inning'] + ($all_data['fine_inning'] / 3));
+                } else {
+                    $all_data['era'] = null;
+                }
+                if ($all_data['batter_count'] !== 0) {
+                    $all_data['k_9'] = $all_data['strikeout'] / $all_data['batter_count'];
+                } else {
+                    $all_data['k_9'] = null;
+                }
+                if (($all_data['inning'] + ($all_data['fine_inning'] / 3)) !== 0) {
+                    $all_data['whip'] = ($all_data['base_on_balls'] + $all_data['single_hits_allowed'] + $all_data['double_hits_allowed'] + $all_data['triple_hits_allowed'] + $all_data['homerun_allowed']) / ($all_data['inning'] + ($all_data['fine_inning'] / 3));
+                } else {
+                    $all_data['whip'] = null;
+                }
+                if (($all_data['hitting'] - ($all_data['four_balls'] + $all_data['dead_balls'] + $all_data['sacrifice_bunt'] + $all_data['sacrifice_fly'])) !== 0) {
+                    $all_data['avg'] = ($all_data['single_hits'] + $all_data['double_hits'] + $all_data['triple_hits'] + $all_data['homerun']) / ($all_data['hitting'] - ($all_data['four_balls'] + $all_data['dead_balls'] + $all_data['sacrifice_bunt'] + $all_data['sacrifice_fly']));
+                } else {
+                    $all_data['avg'] = null;
+                }
+                if (($all_data['hitting'] - ($all_data['sacrifice_bunt'])) !== 0) {
+                    $all_data['obp'] = ($all_data['four_balls'] + $all_data['dead_balls'] + $all_data['single_hits'] + $all_data['double_hits'] + $all_data['triple_hits'] + $all_data['homerun']) / ($all_data['hitting'] - ($all_data['sacrifice_bunt']));
+                } else {
+                    $all_data['obp'] = null;
+                }
+                if (($all_data['hitting'] - ($all_data['four_balls'] + $all_data['dead_balls'] + $all_data['sacrifice_bunt'] + $all_data['sacrifice_fly'])) !== 0) {
+                    $all_data['slg'] = ($all_data['single_hits'] + 2 * $all_data['double_hits'] + 3 * $all_data['triple_hits'] + 4 * $all_data['homerun']) / ($all_data['hitting'] - ($all_data['four_balls'] + $all_data['dead_balls'] + $all_data['sacrifice_bunt'] + $all_data['sacrifice_fly']));
+                } else {
+                    $all_data['slg'] = null;
+                }
+                $all_data['ops'] = $all_data['obp'] + $all_data['slg'];
+                $all_data['rbi'] = $all_data['runs_batted_in'];
+                $all_data['sb'] = $all_data['stolen_bases'];
+                $all_data['iso'] = $all_data['slg'] - $all_data['avg'];
+                if (($all_data['assists'] + $all_data['outs'] + $all_data['errors']) !== 0) {
+                    $all_data['fpct'] = ($all_data['assists'] + $all_data['outs']) / ($all_data['assists'] + $all_data['outs'] + $all_data['errors']);
+                } else {
+                    $all_data['fpct'] = null;
+                }
+                if (($all_data['defense_inning'] + ($all_data['defense_fine_inning'] / 3)) !== 0) {
+                    $all_data['rf'] = ($all_data['assists'] + $all_data['outs']) / ($all_data['defense_inning'] + ($all_data['defense_fine_inning'] / 3));
+                } else {
+                    $all_data['rf'] = null;
+                }
+            }
+            $result = ResultView::where('user_id', $user->id)->get();
+            $rank = Rank::all();
+            $start_date = Carbon::parse(ResultView::min('date'));
+            $end_date = Carbon::parse(ResultView::max('date'));
+            if ($result->count() !== 0) {
+                foreach ($rank as $item) {
+                    $rank_count[$item->eng_name] = 0;
+                    $day_rank_count[$item->eng_name] = 0;
+                }
+                $rank_count['all'] = 0;
+                $day_rank_count['all'] = 0;
+                foreach ($result as $item) {
+                    $rank_count[$item->rank_eng_name] += 1;
+                    $rank_count['all'] += $item->rank_id;
+                }
+                $current_date = $start_date->copy();
+                while ($current_date->lte($end_date)) {
+                    $result_counts = ResultView::where('date', $current_date)->where('user_id', $user->id)->count();
+                    if ($result_counts === 0) {
+                        $current_date->addDay();
+                        continue;
+                    }
+                    $results = ResultView::where('date', $current_date)->where('user_id', $user->id)->orderBy('rank_id', 'desc')->get();
+                    $rank_counts = ResultView::select('rank_id', DB::raw('count(*) as count'))->where('date', $current_date)->where('user_id', $user->id)->groupBy('rank_id')->orderBy('rank_id', 'desc')->get();
+                    $target_rank = 1;
+                    $addition = 0;
+                    foreach($rank_counts as $rank_count) {
+                        $judging = $addition + $rank_count->count;
+                        if ($judging > 1) {
+                            $target_rank = $rank_count->rank_id;
+                            break;
+                        }
+                        $addition += $rank_count->count;
+                    }
+                    $get_rank = Rank::find($target_rank);
+                    $day_rank_count['all'] += $target_rank;
+                    $day_rank_count[$get_rank->eng_name] += 1;
+                    $current_date->addDay();
+                }
+                $all_data['rank_count'] = $rank_count;
+                $all_data['day_rank_count'] = $day_rank_count;
+            }
+            $all_data['user'] = $user;
+            $calc_scores[$user->id] = $all_data;
+        }
+        $ranking = [];
+        foreach ($ranking_label as $key => $item) {
+            $ranking[$key] = sortByItem($calc_scores, $key, $descItem);
+            $ranking[$key]['label'] = $item;
+        }
+        $ranks = Rank::orderBy('id', 'desc')->get();
+        $badge_ranking = [];
+        foreach ($ranks as $rank) {
+            $badge_ranking['rank_count'][$rank->eng_name] = sortByRank($calc_scores, 'rank_count', $rank->eng_name);
+            $badge_ranking['rank_count'][$rank->eng_name]['label'] = $rank->eng_name;
+            $badge_ranking['day_rank_count'][$rank->eng_name] = sortByRank($calc_scores, 'day_rank_count', $rank->eng_name);
+            $badge_ranking['day_rank_count'][$rank->eng_name]['label'] = $rank->eng_name;
+        }
+        $badge_ranking['rank_count']['all'] = sortByRank($calc_scores, 'rank_count', 'all');
+        $badge_ranking['rank_count']['all']['label'] = 'all';
+        $badge_ranking['day_rank_count']['all'] = sortByRank($calc_scores, 'day_rank_count', 'all');
+        $badge_ranking['day_rank_count']['all']['label'] = 'all';
+        $data = [
+            'scores' => $calc_scores,
+            'ranking' => $ranking,
+            'badge_ranking' => $badge_ranking,
+            'ranking_label' => $ranking_label,
+            'type' => 'total',
+        ];
+        return view('ranking.view', $data);
+    }
+
+    public function monthlyRanking ($month = null) {
+        if ($month) {
+            $month = date('Y-m', strtotime($month));
+        } else {
+            $month = date('Y-m');
+        }
+        $start_date = Carbon::parse($month . '-01');
+        $end_date = Carbon::parse($month . '-01')->endOfMonth();
+        $exclusions = ['score_id', 'user_id', 'user_name', 'user_icon', 'game_id', 'date', 'opponent', 'place', 'match_number', 'score_us', 'score_opponent', 'result', 'comment', 'game_score_book_1', 'game_score_book_2', 'pitcher_comment', 'batter_comment', 'defense_comment'];
+        $ranking_label = [
+            'era' => '防御率',
+            'k_9' => '奪三振率',
+            'whip' => 'WHIP',
+            'avg' => '打率',
+            'obp' => '出塁率',
+            'slg' => '長打率',
+            'ops' => 'OPS',
+            'rbi' => '打点',
+            'sb' => '盗塁数',
+            'iso' => 'ISO',
+            'fpct' => '守備率',
+            'rf' => 'レンジファクター',
+        ];
+        $descItem = ['k_9', 'avg', 'obp', 'slg', 'ops', 'rbi', 'sb', 'iso', 'fpct', 'rf'];
+        $integerItem = ['rbi', 'sb'];
+        /*
+         * era: 防御率(自責点*9/投球回)
+         * k_9: 奪三振率(奪三振数/対戦打者数)
+         * whip: WHIP(与四球数+被安打数/投球回)
+         * avg: 打率(安打数/打数)
+         * obp: 出塁率(四球数+死球数+安打数/打数+四球数+死球数+犠飛数)
+         * slg: 長打率((単打数+2*二塁打数+3*三塁打数+4*本塁打数)/打数)
+         * ops: OPS(出塁率+長打率)
+         * rbi: 打点(打点)
+         * sb: 盗塁(盗塁数)
+         * iso: ISO(長打率-打率)
+         * fpct: 守備率(刺殺数+補殺数/刺殺数+補殺数+失策数)
+         * rf: レンジファクター(刺殺数+補殺数/守備イニング)
+        */
+        // ソート関数
+        function sortByItem($array, $itemName, $descItem) {
+            // 空の要素やnullを削除
+            $filteredArray = array_filter($array, function($item) use ($itemName) {
+                return isset($item[$itemName]);
+            });
+
+            // ソート
+            usort($filteredArray, function($a, $b) use ($itemName, $descItem) {
+                if (in_array($itemName, $descItem)) {
+                    return $b[$itemName] <=> $a[$itemName];
+                }
+                return $a[$itemName] <=> $b[$itemName];
+            });
+
+            return $filteredArray;
+        }
+        function sortByRank($array, $itemName, $rankName) {
+            // 空の要素やnullを削除
+            $filteredArray = array_filter($array, function($item) use ($itemName, $rankName) {
+                return isset($item[$itemName][$rankName]);
+            });
+
+            // ソート
+            usort($filteredArray, function($a, $b) use ($itemName, $rankName) {
+                return $b[$itemName][$rankName] <=> $a[$itemName][$rankName];
+            });
+
+            return $filteredArray;
+        }
+        $users = User::all();
+        foreach ($users as $user) {
+            $scores = ScoreView::where('user_id', $user->id)->whereBetween('date', [$start_date, $end_date])->get();
+            $all_data = [];
+            foreach ($scores as $score) {
+                foreach($score->toArray() as $key => $item) {
+                    if (!in_array($key, $exclusions)) {
+                        if (!isset($all_data[$key])) {
+                            $all_data[$key] = 0;
+                        }
+                        if (is_numeric($item)) {
+                            $all_data[$key] += $item;
+                        } elseif (is_null($item)) {
+                            $all_data[$key] += 0;
+                        }
+                    }
+                }
+            }
+            if (count($all_data) !== 0) {
+                if (($all_data['inning'] + ($all_data['fine_inning'] / 3)) !== 0) {
+                    $all_data['era'] = $all_data['earned_run'] * 9 / ($all_data['inning'] + ($all_data['fine_inning'] / 3));
+                } else {
+                    $all_data['era'] = null;
+                }
+                if ($all_data['batter_count'] !== 0) {
+                    $all_data['k_9'] = $all_data['strikeout'] / $all_data['batter_count'];
+                } else {
+                    $all_data['k_9'] = null;
+                }
+                if (($all_data['inning'] + ($all_data['fine_inning'] / 3)) !== 0) {
+                    $all_data['whip'] = ($all_data['base_on_balls'] + $all_data['single_hits_allowed'] + $all_data['double_hits_allowed'] + $all_data['triple_hits_allowed'] + $all_data['homerun_allowed']) / ($all_data['inning'] + ($all_data['fine_inning'] / 3));
+                } else {
+                    $all_data['whip'] = null;
+                }
+                if (($all_data['hitting'] - ($all_data['four_balls'] + $all_data['dead_balls'] + $all_data['sacrifice_bunt'] + $all_data['sacrifice_fly'])) !== 0) {
+                    $all_data['avg'] = ($all_data['single_hits'] + $all_data['double_hits'] + $all_data['triple_hits'] + $all_data['homerun']) / ($all_data['hitting'] - ($all_data['four_balls'] + $all_data['dead_balls'] + $all_data['sacrifice_bunt'] + $all_data['sacrifice_fly']));
+                } else {
+                    $all_data['avg'] = null;
+                }
+                if (($all_data['hitting'] - ($all_data['sacrifice_bunt'])) !== 0) {
+                    $all_data['obp'] = ($all_data['four_balls'] + $all_data['dead_balls'] + $all_data['single_hits'] + $all_data['double_hits'] + $all_data['triple_hits'] + $all_data['homerun']) / ($all_data['hitting'] - ($all_data['sacrifice_bunt']));
+                } else {
+                    $all_data['obp'] = null;
+                }
+                if (($all_data['hitting'] - ($all_data['four_balls'] + $all_data['dead_balls'] + $all_data['sacrifice_bunt'] + $all_data['sacrifice_fly'])) !== 0) {
+                    $all_data['slg'] = ($all_data['single_hits'] + 2 * $all_data['double_hits'] + 3 * $all_data['triple_hits'] + 4 * $all_data['homerun']) / ($all_data['hitting'] - ($all_data['four_balls'] + $all_data['dead_balls'] + $all_data['sacrifice_bunt'] + $all_data['sacrifice_fly']));
+                } else {
+                    $all_data['slg'] = null;
+                }
+                $all_data['ops'] = $all_data['obp'] + $all_data['slg'];
+                $all_data['rbi'] = $all_data['runs_batted_in'];
+                $all_data['sb'] = $all_data['stolen_bases'];
+                $all_data['iso'] = $all_data['slg'] - $all_data['avg'];
+                if (($all_data['assists'] + $all_data['outs'] + $all_data['errors']) !== 0) {
+                    $all_data['fpct'] = ($all_data['assists'] + $all_data['outs']) / ($all_data['assists'] + $all_data['outs'] + $all_data['errors']);
+                } else {
+                    $all_data['fpct'] = null;
+                }
+                if (($all_data['defense_inning'] + ($all_data['defense_fine_inning'] / 3)) !== 0) {
+                    $all_data['rf'] = ($all_data['assists'] + $all_data['outs']) / ($all_data['defense_inning'] + ($all_data['defense_fine_inning'] / 3));
+                } else {
+                    $all_data['rf'] = null;
+                }
+            }
+            $result = ResultView::where('user_id', $user->id)->whereBetween('date', [$start_date, $end_date])->get();
+            $rank = Rank::all();
+            if ($result->count() !== 0) {
+                foreach ($rank as $item) {
+                    $rank_count[$item->eng_name] = 0;
+                    $day_rank_count[$item->eng_name] = 0;
+                }
+                $rank_count['all'] = 0;
+                $day_rank_count['all'] = 0;
+                foreach ($result as $item) {
+                    $rank_count[$item->rank_eng_name] += 1;
+                    $rank_count['all'] += $item->rank_id;
+                }
+                $current_date = $start_date->copy();
+                while ($current_date->lte($end_date)) {
+                    $result_counts = ResultView::where('date', $current_date)->where('user_id', $user->id)->count();
+                    if ($result_counts === 0) {
+                        $current_date->addDay();
+                        continue;
+                    }
+                    $results = ResultView::where('date', $current_date)->where('user_id', $user->id)->whereBetween('date', [$start_date, $end_date])->orderBy('rank_id', 'desc')->get();
+                    $rank_counts = ResultView::select('rank_id', DB::raw('count(*) as count'))->where('date', $current_date)->where('user_id', $user->id)->whereBetween('date', [$start_date, $end_date])->groupBy('rank_id')->orderBy('rank_id', 'desc')->get();
+                    $target_rank = 1;
+                    $addition = 0;
+                    foreach($rank_counts as $rank_count) {
+                        $judging = $addition + $rank_count->count;
+                        if ($judging > 1) {
+                            $target_rank = $rank_count->rank_id;
+                            break;
+                        }
+                        $addition += $rank_count->count;
+                    }
+                    $get_rank = Rank::find($target_rank);
+                    $day_rank_count['all'] += $target_rank;
+                    $day_rank_count[$get_rank->eng_name] += 1;
+                    $current_date->addDay();
+                }
+                $all_data['rank_count'] = $rank_count;
+                $all_data['day_rank_count'] = $day_rank_count;
+            }
+            $all_data['user'] = $user;
+            $calc_scores[$user->id] = $all_data;
+        }
+        $ranking = [];
+        foreach ($ranking_label as $key => $item) {
+            $ranking[$key] = sortByItem($calc_scores, $key, $descItem);
+            $ranking[$key]['label'] = $item;
+        }
+        $ranks = Rank::orderBy('id', 'desc')->get();
+        $badge_ranking = [];
+        foreach ($ranks as $rank) {
+            $badge_ranking['rank_count'][$rank->eng_name] = sortByRank($calc_scores, 'rank_count', $rank->eng_name);
+            $badge_ranking['rank_count'][$rank->eng_name]['label'] = $rank->eng_name;
+            $badge_ranking['day_rank_count'][$rank->eng_name] = sortByRank($calc_scores, 'day_rank_count', $rank->eng_name);
+            $badge_ranking['day_rank_count'][$rank->eng_name]['label'] = $rank->eng_name;
+        }
+        $badge_ranking['rank_count']['all'] = sortByRank($calc_scores, 'rank_count', 'all');
+        $badge_ranking['rank_count']['all']['label'] = 'all';
+        $badge_ranking['day_rank_count']['all'] = sortByRank($calc_scores, 'day_rank_count', 'all');
+        $badge_ranking['day_rank_count']['all']['label'] = 'all';
+        $data = [
+            'month' => $month,
+            'scores' => $calc_scores,
+            'ranking' => $ranking,
+            'badge_ranking' => $badge_ranking,
+            'ranking_label' => $ranking_label,
+            'type' => 'monthly',
+        ];
+        return view('ranking.view', $data);
     }
 }

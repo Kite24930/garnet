@@ -31,6 +31,9 @@ Route::middleware('auth')->group(function () {
     Route::delete('/score/{score}', [ScoreController::class, 'scoreDestroy'])->name('score.destroy');
     Route::get('/score/view/{score}', [ScoreController::class, 'scoreView'])->name('score.view');
 
+    Route::get('/ranking/total', [ScoreController::class, 'totalRanking'])->name('ranking.total');
+    Route::get('/ranking/month/{month?}', [ScoreController::class, 'monthlyRanking'])->name('ranking.monthly');
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::post('/profile/icon', [ProfileController::class, 'icon'])->name('profile.icon');

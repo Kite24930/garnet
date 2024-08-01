@@ -78,6 +78,7 @@ export default defineConfig({
                 scoreStyle: 'resources/css/score.css',
                 scoreNew: 'resources/js/score/score-new.js',
                 scoreEdit: 'resources/js/score/score-edit.js',
+                ranking: 'resources/js/score/ranking.js',
                 mypage: 'resources/js/mypage/mypage.js',
                 message: 'resources/js/mypage/message.js',
                 messageSend: 'resources/js/mypage/message-send.js',

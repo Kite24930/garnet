@@ -55,6 +55,9 @@
             <x-parts.menu-item link="{{ route('score') }}">
                 Score
             </x-parts.menu-item>
+            <x-parts.menu-item link="{{ route('ranking.total') }}">
+                Ranking
+            </x-parts.menu-item>
             @can('access to user')
                 <x-parts.menu-item link="{{ route('profile.edit') }}">
                     Profile
