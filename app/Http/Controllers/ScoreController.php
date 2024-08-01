@@ -446,20 +446,20 @@ class ScoreController extends Controller
                     $all_data['rf'] = null;
                 }
             }
-            $result = ResultView::where('user_id', $user->id)->get();
+            $results = ResultView::where('user_id', $user->id)->get();
             $rank = Rank::all();
             $start_date = Carbon::parse(ResultView::min('date'));
             $end_date = Carbon::parse(ResultView::max('date'));
-            if ($result->count() !== 0) {
+            if ($results->count() !== 0) {
                 foreach ($rank as $item) {
                     $rank_count[$item->eng_name] = 0;
                     $day_rank_count[$item->eng_name] = 0;
                 }
                 $rank_count['all'] = 0;
                 $day_rank_count['all'] = 0;
-                foreach ($result as $item) {
-                    $rank_count[$item->rank_eng_name] += 1;
-                    $rank_count['all'] += $item->rank_id;
+                foreach ($results as $result) {
+                    $rank_count[$result->rank_eng_name] += 1;
+                    $rank_count['all'] += $result->rank_id;
                 }
                 $current_date = $start_date->copy();
                 while ($current_date->lte($end_date)) {
@@ -468,17 +468,17 @@ class ScoreController extends Controller
                         $current_date->addDay();
                         continue;
                     }
-                    $results = ResultView::where('date', $current_date)->where('user_id', $user->id)->orderBy('rank_id', 'desc')->get();
+//                    $results = ResultView::where('date', $current_date)->where('user_id', $user->id)->orderBy('rank_id', 'desc')->get();
                     $rank_counts = ResultView::select('rank_id', DB::raw('count(*) as count'))->where('date', $current_date)->where('user_id', $user->id)->groupBy('rank_id')->orderBy('rank_id', 'desc')->get();
                     $target_rank = 1;
                     $addition = 0;
-                    foreach($rank_counts as $rank_count) {
-                        $judging = $addition + $rank_count->count;
+                    foreach($rank_counts as $count) {
+                        $judging = $addition + $count->count;
                         if ($judging > 1) {
-                            $target_rank = $rank_count->rank_id;
+                            $target_rank = $count->rank_id;
                             break;
                         }
-                        $addition += $rank_count->count;
+                        $addition += $count->count;
                     }
                     $get_rank = Rank::find($target_rank);
                     $day_rank_count['all'] += $target_rank;
@@ -651,18 +651,18 @@ class ScoreController extends Controller
                     $all_data['rf'] = null;
                 }
             }
-            $result = ResultView::where('user_id', $user->id)->whereBetween('date', [$start_date, $end_date])->get();
+            $results = ResultView::where('user_id', $user->id)->whereBetween('date', [$start_date, $end_date])->get();
             $rank = Rank::all();
-            if ($result->count() !== 0) {
+            if ($results->count() !== 0) {
                 foreach ($rank as $item) {
                     $rank_count[$item->eng_name] = 0;
                     $day_rank_count[$item->eng_name] = 0;
                 }
                 $rank_count['all'] = 0;
                 $day_rank_count['all'] = 0;
-                foreach ($result as $item) {
-                    $rank_count[$item->rank_eng_name] += 1;
-                    $rank_count['all'] += $item->rank_id;
+                foreach ($results as $result) {
+                    $rank_count[$result->rank_eng_name] += 1;
+                    $rank_count['all'] += $result->rank_id;
                 }
                 $current_date = $start_date->copy();
                 while ($current_date->lte($end_date)) {
@@ -671,17 +671,17 @@ class ScoreController extends Controller
                         $current_date->addDay();
                         continue;
                     }
-                    $results = ResultView::where('date', $current_date)->where('user_id', $user->id)->whereBetween('date', [$start_date, $end_date])->orderBy('rank_id', 'desc')->get();
+//                    $results = ResultView::where('date', $current_date)->where('user_id', $user->id)->whereBetween('date', [$start_date, $end_date])->orderBy('rank_id', 'desc')->get();
                     $rank_counts = ResultView::select('rank_id', DB::raw('count(*) as count'))->where('date', $current_date)->where('user_id', $user->id)->whereBetween('date', [$start_date, $end_date])->groupBy('rank_id')->orderBy('rank_id', 'desc')->get();
                     $target_rank = 1;
                     $addition = 0;
-                    foreach($rank_counts as $rank_count) {
-                        $judging = $addition + $rank_count->count;
+                    foreach($rank_counts as $count) {
+                        $judging = $addition + $count->count;
                         if ($judging > 1) {
-                            $target_rank = $rank_count->rank_id;
+                            $target_rank = $count->rank_id;
                             break;
                         }
-                        $addition += $rank_count->count;
+                        $addition += $count->count;
                     }
                     $get_rank = Rank::find($target_rank);
                     $day_rank_count['all'] += $target_rank;
