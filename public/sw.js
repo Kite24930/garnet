@@ -1,7 +1,7 @@
 import 'https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js';
 import 'https://www.gstatic.com/firebasejs/9.6.10/firebase-messaging-compat.js';
 
-const CACHE_NAME = 'garnet-cache-v1';
+const CACHE_NAME = 'garnet-cache-v1.1';
 const urlsToCache = [
     '/storage/favicon.ico',
     '/robots.txt',
