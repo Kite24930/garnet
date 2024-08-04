@@ -47,7 +47,7 @@ export default defineConfig({
                         urlPattern: /^https:\/\/garnets\.tech\/.*\.(?:css|js)$/,
                         handler: 'NetworkFirst',
                         options: {
-                            cacheName: 'garnet-cache-v1',
+                            cacheName: 'garnet-cache-v2',
                             expiration: {
                                 maxEntries: 100,
                                 maxAgeSeconds: 60,
