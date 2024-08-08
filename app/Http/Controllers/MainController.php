@@ -7,7 +7,9 @@ use App\Models\Message;
 use App\Models\MessageView;
 use App\Models\Mission;
 use App\Models\Notification;
+use App\Models\Period;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
@@ -28,6 +30,12 @@ class MainController extends Controller
         $team_mission = Mission::where('user_id', 0)->where('start_date', '<=', date('Y-m-d'))->where('due_date', '>=', date('Y-m-d'))->orderBy('created_at', 'desc')->get();
         $your_mission = Mission::where('user_id', auth()->id())->where('start_date', '<=', date('Y-m-d'))->where('due_date', '>=', date('Y-m-d'))->orderBy('created_at', 'desc')->get();
         $unread_messages = Message::where('user_id', auth()->id())->where('is_read', 0)->count();
+        $target = Period::first();
+        $today = Carbon::today();
+        if ($target) {
+            $diff_days = $today->diffInDays(Carbon::parse($target->target_date));
+            $target->diff_days = $diff_days;
+        }
         $data = [
             'access_log' => $accessLog,
             'start_of_day' => now('Asia/Tokyo')->startOfDay(),
@@ -37,6 +45,7 @@ class MainController extends Controller
             'your_mission' => $your_mission,
             'new_mission' => $new_mission,
             'unread_messages' => $unread_messages,
+            'target' => $target,
         ];
         return view('index', $data);
     }
@@ -176,7 +185,7 @@ class MainController extends Controller
 
     public function getVapidKey () {
         return response()->json([
-            'vapid_kay' => env('VAPID_KEY'),
+            'vapid_key' => env('VAPID_KEY'),
         ]);
     }
 

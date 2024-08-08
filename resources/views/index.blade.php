@@ -46,6 +46,12 @@
             </div>
         @endif
         <div class="flex flex-col items-center justify-center text-4xl gap-4 w-full mb-12">
+            @if(isset($target))
+                <div class="text-lg text-center">
+                    <p class="text-center">{{ __($target->target.'まで') }}</p>
+                    <p class="text-center">あと<span class="text-3xl font-bold underline">{{ __($target->diff_days.'日') }}</span></p>
+                </div>
+            @endif
             <x-parts.menu-item link="{{ route('entry.show') }}">
                 Entry
             </x-parts.menu-item>

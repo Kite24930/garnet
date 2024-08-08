@@ -28,6 +28,9 @@
             <x-parts.menu-item link="{{ route('setting.task') }}">
                 Task
             </x-parts.menu-item>
+            <x-parts.menu-item link="{{ route('setting.period') }}">
+                Period
+            </x-parts.menu-item>
         </div>
     </div>
     @vite(['resources/js/settings.js'])

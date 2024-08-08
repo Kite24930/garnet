@@ -8,6 +8,7 @@ use App\Models\Item;
 use App\Models\Mission;
 use App\Models\MissionView;
 use App\Models\Notification;
+use App\Models\Period;
 use App\Models\Rank;
 use App\Models\Task;
 use App\Models\TaskView;
@@ -349,6 +350,33 @@ class SettingController extends Controller
             return response()->json(['status' => 'success', 'success' => 'Captain unassigned successfully']);
         } catch (\Exception $e) {
             return response()->json(['status' => 'error', 'error' => 'Captain unassigned failed', 'message' => $e->getMessage()]);
+        }
+    }
+
+    public function period() {
+        $data = [
+            'period' => Period::first(),
+        ];
+        return view('settings.period', $data);
+    }
+
+    public function periodStore(Request $request) {
+        try {
+            $period = Period::first();
+            if ($period) {
+                $period->update([
+                    'target_date' => $request->target_date,
+                    'target' => $request->target,
+                ]);
+            } else {
+                Period::create([
+                    'target_date' => $request->target_date,
+                    'target' => $request->target,
+                ]);
+            }
+            return redirect()->route('setting.period')->with('success', 'Period added successfully');
+        } catch (\Exception $e) {
+            return redirect()->route('setting.period')->with('error', 'Period added failed')->with('message', $e->getMessage())->with('request', $request->all());
         }
     }
 }

@@ -72,6 +72,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/settings/users', [SettingController::class, 'users'])->name('setting.users');
         Route::post('/settings/user/assign/captain', [SettingController::class, 'assignCaptain'])->name('setting.user.assign.captain');
         Route::delete('/settings/user/unassign/captain/{user_id}', [SettingController::class, 'unassignCaptain'])->name('setting.user.unassign.captain');
+
+        Route::get('/settings/period', [SettingController::class, 'period'])->name('setting.period');
+        Route::post('/settings/period', [SettingController::class, 'periodStore'])->name('setting.period.store');
     });
 
     Route::group(['middleware' => ['role:admin|captain']], function () {
