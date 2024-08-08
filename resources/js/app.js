@@ -50,7 +50,7 @@ if ('serviceWorker' in navigator) {
 
             axios.post('/get/vapid_key').then(async (res) => {
                 const messaging = getMessaging();
-                console.log(res.data);
+                // console.log(res.data);
                 getToken(messaging, {
                     vapidKey: res.data.vapid_key,
                     serviceWorkerRegistration: registration,
