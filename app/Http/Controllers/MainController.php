@@ -228,4 +228,31 @@ class MainController extends Controller
 
         return $client->getAccessToken()['access_token'];
     }
+
+    public function dailyNotification() {
+        $notifications = Notification::all();
+        $period = Period::first();
+        if ($period) {
+            $target_date = Carbon::parse($period->target_date);
+            $today = Carbon::today();
+            $diff_days = $today->diffInDays($target_date);
+            $title = $period->target.'まで'.$diff_days.'日';
+            foreach ($notifications as $notification) {
+                $token = $notification->token;
+
+                $message = [
+                    'message' => [
+                        'token' => $token,
+                        'notification' => [
+                            'title' => $title,
+                            'body' => '今日も楽しんでいこか！',
+                        ],
+                    ]
+                ];
+
+                $response = Http::withToken($this->getAccessToken())
+                    ->post('https://fcm.googleapis.com/v1/projects/garnet-b7ded/messages:send', $message);
+            }
+        }
+    }
 }
