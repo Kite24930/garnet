@@ -2,6 +2,21 @@
     <form id="registerForm" method="POST" action="{{ route('register') }}" class="bg-gray-300 p-4 rounded-lg mt-4">
         @csrf
 
+        <!-- Validation Errors -->
+        @if ($errors->any())
+            <div class="mb-4">
+                <div class="font-medium text-red-600">
+                    {{ __('Whoops! Something went wrong.') }}
+                </div>
+
+                <ul class="mt-3 list-disc list-inside text-sm text-red-600">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
         <!-- Name -->
         <div>
             <x-input-label for="name" :value="__('Name')" />
