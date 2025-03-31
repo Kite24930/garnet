@@ -14,12 +14,15 @@ use Illuminate\Support\Facades\DB;
 
 class ScoreController extends Controller
 {
-    public function score ($user = null) {
+    public function score ($user = null, $season = null) {
         $exclusions = ['score_id', 'user_id', 'user_name', 'user_icon', 'game_id', 'date', 'opponent', 'place', 'match_number', 'score_us', 'score_opponent', 'result', 'comment', 'game_score_book_1', 'game_score_book_2', 'pitcher_comment', 'batter_comment', 'defense_comment'];
         if (!$user) {
             $user = auth()->id();
         }
-        $all_scores = ScoreView::where('user_id', $user)->orderBy('date', 'desc')->get();
+        if (!$season) {
+            return redirect()->route('score', ['user' => $user, 'season' => date('Y')]);
+        }
+        $all_scores = ScoreView::where('user_id', $user)->whereBetween('date', [Carbon::parse($season.'-01-01'), Carbon::parse($season.'-12-31')])->orderBy('date', 'desc')->get();
         $game_count = $all_scores->count();
         $all_data = [];
         foreach ($all_scores as $score) {
@@ -44,6 +47,8 @@ class ScoreController extends Controller
             'all_data' => $all_data,
             'users' => $users,
             'user' => $userRow,
+            'user_id' => $user,
+            'season' => $season,
         ];
         return view('score.score', $data);
     }

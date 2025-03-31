@@ -23,7 +23,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/logs/{year?}/{month?}/{user?}', [LogsController::class, 'show'])->name('logs.show');
     Route::get('/view/logs/{log}/{user}', [LogsController::class, 'view'])->name('logs.view');
 
-    Route::get('/score/summary/{user?}', [ScoreController::class, 'score'])->name('score');
+    Route::get('/score/summary/{user?}/{season?}', [ScoreController::class, 'score'])->name('score');
     Route::get('/score/new', [ScoreController::class, 'scoreNew'])->name('score.new');
     Route::post('/score', [ScoreController::class, 'scoreStore'])->name('score.store');
     Route::get('/score/edit/{score}', [ScoreController::class, 'scoreEdit'])->name('score.edit');

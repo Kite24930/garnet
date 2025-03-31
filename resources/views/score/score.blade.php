@@ -14,7 +14,7 @@
                 <div class="text-red-500 text-2xl">{{ session('error') }}</div>
                 <div class="text-red-500 text-base">{{ session('message') }}</div>
             @endif
-            <div class="flex flex-col justify-center items-center">
+            <div class="flex flex-col justify-center items-center gap-4">
                 <button id="dropdown" data-dropdown-toggle="dropdownMenu" class="flex items-center justify-center gap-2 px-2 font-medium" type="button">
                     @if($user->icon)
                         <img src="{{ asset('storage/account/'.$user->id.'/'.$user->icon) }}" alt="{{ $user->name }}" class="w-8 h-8 object-cover rounded-full">
@@ -36,6 +36,20 @@
                             <div class="">{{ $usr->name }}</div>
                         </a>
                     @endforeach
+                </div>
+                <div class="flex flex-col items-center gap-2">
+                    <button id="season" data-dropdown-toggle="seasonDropdown" class="flex items-center justify-center gap-2 px-2 font-medium" type="button">
+                        {{ __($season . 'シーズン') }}
+                        <img src="{{ asset('/storage/chevron-down.svg') }}" alt="↓">
+                    </button>
+                    <div class="garnet-line w-full !h-0.5"></div>
+                    <div id="seasonDropdown" class="flex flex-col justify-center items-start gap-4 py-2 px-4 bg-[#800000] rounded-lg hidden">
+                        @for($year = 2024; $year <= date('Y'); $year++)
+                            <a href="{{ route('score', ['user' => $user_id, 'season' => $year]) }}" class="flex items-center gap-2 border-b pb-1">
+                                {{ __($year . 'シーズン') }}
+                            </a>
+                        @endfor
+                    </div>
                 </div>
             </div>
             <a href="{{ route('score.new') }}" class="entry-btn bottom-4 right-4 py-2 px-4 text-gray-600 garnet">New Score</a>
