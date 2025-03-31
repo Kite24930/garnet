@@ -32,7 +32,7 @@ class RegisteredUserController extends Controller
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],'g-recaptcha-response' => ['required', 'captcha:signup,0.5']
+            'password' => ['required', 'confirmed', Rules\Password::defaults()],'g-recaptcha-response' => ['required', 'captcha']
         ],
         [
             'name.required' => '名前は必須です。',
