@@ -49,17 +49,19 @@ window.addEventListener('load', () => {
             }, 500)
         })
     }
-
-    setTimeout(() => {
-        if (document.body.classList.contains('fade-out')) {
-            document.body.classList.remove('fade-out');
-            document.body.classList.add('fade-in');
-        }
-    }, 2000)
 })
+
+const fade = setTimeout(() => {
+    if (document.body.classList.contains('fade-out')) {
+
+        document.body.classList.remove('fade-out');
+        document.body.classList.add('fade-in');
+    }
+}, 2000)
 
 document.querySelectorAll('.btn-item').forEach((el) => {
     el.addEventListener('click', () => {
+        clearTimeout(fade);
         const link = el.getAttribute('data-link');
         const line = el.querySelector('.garnet-line');
         line.classList.add('btn-effect');

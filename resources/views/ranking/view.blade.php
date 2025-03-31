@@ -14,7 +14,7 @@
             <div class="garnet-line w-full !h-0.5"></div>
             <div id="seasonDropdown" class="flex flex-col justify-center items-start gap-4 py-2 px-4 bg-[#800000] rounded-lg hidden">
                 @for($year = 2024; $year <= date('Y'); $year++)
-                    <a href="{{ route('ranking.total', ['season' => $year]) }}" class="flex items-center gap-2 border-b pb-1">
+                    <a href="{{ route('ranking.total', ['season' => $year]) }}" class="flex items-center gap-2 border-b pb-1 btn-item">
                         {{ __($year . 'シーズン') }}
                     </a>
                 @endfor
