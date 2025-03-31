@@ -49,6 +49,13 @@ window.addEventListener('load', () => {
             }, 500)
         })
     }
+
+    setTimeout(() => {
+        if (document.body.classList.contains('fade-out')) {
+            document.body.classList.remove('fade-out');
+            document.body.classList.add('fade-in');
+        }
+    }, 2000)
 })
 
 document.querySelectorAll('.btn-item').forEach((el) => {
