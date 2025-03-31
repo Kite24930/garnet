@@ -325,7 +325,10 @@ class ScoreController extends Controller
         return view('score.view', $data);
     }
 
-    public function totalRanking () {
+    public function totalRanking ($season = null) {
+        if (!$season) {
+            return redirect()->route('ranking.total', ['season' => date('Y')]);
+        }
         $exclusions = ['score_id', 'user_id', 'user_name', 'user_icon', 'game_id', 'date', 'opponent', 'place', 'match_number', 'score_us', 'score_opponent', 'result', 'comment', 'game_score_book_1', 'game_score_book_2', 'pitcher_comment', 'batter_comment', 'defense_comment'];
         $ranking_label = [
             'era' => '防御率',
@@ -389,7 +392,7 @@ class ScoreController extends Controller
         }
         $users = User::all();
         foreach ($users as $user) {
-            $scores = ScoreView::where('user_id', $user->id)->get();
+            $scores = ScoreView::where('user_id', $user->id)->whereBetween('date', [Carbon::parse($season.'-01-01'), Carbon::parse($season.'-12-31')])->get();
             $all_data = [];
             foreach ($scores as $score) {
                 foreach($score->toArray() as $key => $item) {
@@ -451,10 +454,10 @@ class ScoreController extends Controller
                     $all_data['rf'] = null;
                 }
             }
-            $results = ResultView::where('user_id', $user->id)->get();
+            $results = ResultView::where('user_id', $user->id)->whereBetween('date', [Carbon::parse($season.'-01-01'), Carbon::parse($season.'-12-31')])->get();
             $rank = Rank::all();
-            $start_date = Carbon::parse(ResultView::min('date'));
-            $end_date = Carbon::parse(ResultView::max('date'));
+            $start_date = Carbon::parse(ResultView::whereBetween('date', [Carbon::parse($season.'-01-01'), Carbon::parse($season.'-12-31')])->min('date'));
+            $end_date = Carbon::parse(ResultView::whereBetween('date', [Carbon::parse($season.'-01-01'), Carbon::parse($season.'-12-31')])->max('date'));
             if ($results->count() !== 0) {
                 foreach ($rank as $item) {
                     $rank_count[$item->eng_name] = 0;
@@ -519,6 +522,7 @@ class ScoreController extends Controller
             'badge_ranking' => $badge_ranking,
             'ranking_label' => $ranking_label,
             'type' => 'total',
+            'season' => $season,
         ];
         return view('ranking.view', $data);
     }

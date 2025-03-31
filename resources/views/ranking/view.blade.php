@@ -6,6 +6,20 @@
                 <div class="garnet-line w-full"></div>
             </div>
         </div>
+        <div class="flex flex-col items-center gap-2">
+            <button id="season" data-dropdown-toggle="seasonDropdown" class="flex items-center justify-center gap-2 px-2 font-medium" type="button">
+                {{ __($season . 'シーズン') }}
+                <img src="{{ asset('/storage/chevron-down.svg') }}" alt="↓">
+            </button>
+            <div class="garnet-line w-full !h-0.5"></div>
+            <div id="seasonDropdown" class="flex flex-col justify-center items-start gap-4 py-2 px-4 bg-[#800000] rounded-lg hidden">
+                @for($year = 2024; $year <= date('Y'); $year++)
+                    <a href="{{ route('ranking.total', ['season' => $year]) }}" class="flex items-center gap-2 border-b pb-1">
+                        {{ __($year . 'シーズン') }}
+                    </a>
+                @endfor
+            </div>
+        </div>
         <div class="flex flex-col items-center justify-center gap-4 w-full">
             @if(session('success'))
                 <div class="text-green-500 text-2xl">{{ session('success') }}</div>
