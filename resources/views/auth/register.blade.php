@@ -1,5 +1,5 @@
-<x-template css="index.css" title="register">
-    <form method="POST" action="{{ route('register') }}" class="bg-gray-300 p-4 rounded-lg mt-4">
+<x-form-template css="index.css" title="register">
+    <form id="registerForm" method="POST" action="{{ route('register') }}" class="bg-gray-300 p-4 rounded-lg mt-4">
         @csrf
 
         <!-- Name -->
@@ -39,15 +39,18 @@
             <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
         </div>
 
+        <div class="g-recaptcha rounded-lg mt-2" data-sitekey="6LcbSAUrAAAAADsIsLGTug9GxzlGt_vET9A--1WH" data-action="SIGNUP"></div>
+
         <div class="flex items-center justify-end mt-4">
             <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('login') }}">
                 {{ __('Already registered?') }}
             </a>
-
-            <x-primary-button class="ms-4">
+            <x-primary-button
+                id="registerBtn"
+            >
                 {{ __('Register') }}
             </x-primary-button>
         </div>
     </form>
     @vite(['resources/js/index.js'])
-</x-template>
+</x-form-template>
